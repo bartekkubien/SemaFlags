@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SemaFlags.Models;
 
 namespace SemaFlags.Controllers
 {
@@ -10,7 +11,7 @@ namespace SemaFlags.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return View(BoardList.Boards);
         }
 
         public IActionResult About()
@@ -30,6 +31,17 @@ namespace SemaFlags.Controllers
         public IActionResult Error()
         {
             return View();
+        }
+        [HttpGet]
+        public ViewResult Board()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ViewResult Board(Board board)
+        {
+            BoardList.AddBoard(board);
+            return View("Index", BoardList.Boards);
         }
     }
 }

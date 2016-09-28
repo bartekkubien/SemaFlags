@@ -1,0 +1,18 @@
+﻿@model SemaFlags.Models.Board
+
+@{
+    ViewData["Title"] = "Board details";
+}
+
+
+<form asp-action="Board" method="post">
+    <p>
+        <label asp-for="Name">Board name:</label>
+        <input asp-for="Name" />
+    </p>
+    <p>
+        <label asp-for="Description">Board description:</label>
+        <input asp-for="Description" />
+    </p>
+    <button type="submit">Apply</button>
+</form>
