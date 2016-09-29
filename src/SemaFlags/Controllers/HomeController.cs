@@ -32,6 +32,7 @@ namespace SemaFlags.Controllers
         {
             return View();
         }
+
         [HttpGet]
         public ViewResult Board()
         {
@@ -40,8 +41,13 @@ namespace SemaFlags.Controllers
         [HttpPost]
         public ViewResult Board(Board board)
         {
-            BoardList.AddBoard(board);
-            return View("Index", BoardList.Boards);
+            if (ModelState.IsValid)
+            {
+                BoardList.AddBoard(board);
+                return View("Index", BoardList.Boards);
+            }
+            else
+                return View();
         }
     }
 }

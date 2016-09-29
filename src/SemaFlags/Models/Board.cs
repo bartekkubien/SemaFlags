@@ -11,6 +11,7 @@ namespace SemaFlags.Models
         [Key]
         public int Id { get; set; }
         [Key]
+        [Required(ErrorMessage ="Please enter board name!")]
         public string Name { get; set; }
         public string Description { get; set; }
 

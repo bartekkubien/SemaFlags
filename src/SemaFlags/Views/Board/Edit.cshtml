@@ -1,11 +1,11 @@
 ﻿@model SemaFlags.Models.Board
 
 @{
-    ViewData["Title"] = "Board details";
+    ViewData["Title"] = "Edit board details";
 }
 
 
-<form asp-action="Index" method="post">
+<form asp-action="Edit" method="post">
     <div asp-validation-summary="All"></div>
     <p>
         <label asp-for="Name">Board name:</label>
