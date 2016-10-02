@@ -7,7 +7,7 @@
 
 <p>
     <p>
-        <a asp-action="Index" asp-controller="Board">Add board</a>
+        <a asp-action="Add" asp-controller="Board">Add board</a>
     </p>
     <p>Board list:</p>
     <p>
@@ -24,7 +24,7 @@
             {
                     <tr>
                         <td>@b.Id</td>
-                        <td>@b.Name</td>
+                        <td><a asp-action="Index" asp-controller="Board" asp-route-id=@b.Id>@b.Name</a></td>
                         <td>@b.Description</td>
                         <td>
                             <a asp-action="Edit" asp-controller="Board" asp-route-id=@b.Id>Edit</a>

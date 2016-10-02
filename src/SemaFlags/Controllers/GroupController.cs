@@ -8,9 +8,9 @@ using SemaFlags.Models;
 
 namespace SemaFlags.Controllers
 {
-    public class BoardController : BaseController
+    public class GroupController : BaseController
     {
-        public BoardController(IBoardRepo repo) : base(repo)
+        public GroupController(IBoardRepo repo) : base(repo)
         {
         }
 

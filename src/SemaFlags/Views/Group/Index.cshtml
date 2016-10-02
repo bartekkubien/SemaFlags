@@ -1,7 +1,7 @@
-﻿@model SemaFlags.Models.Board
+﻿@model SemaFlags.Models.Group
 
 @{
-    ViewData["Title"] = "Board details";
+    ViewData["Title"] = "Group details";
 }
 
 
@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SemaFlags.Models.Group g in Model.Groups)
+            @foreach (SemaFlags.Models.Node g in Model.Nodes)
             {
                 <tr>
                     <td>@g.Id</td>

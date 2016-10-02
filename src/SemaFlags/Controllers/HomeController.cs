@@ -7,11 +7,15 @@ using SemaFlags.Models;
 
 namespace SemaFlags.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        public HomeController(IBoardRepo repo):base(repo)
+        {
+            
+        }
         public IActionResult Index()
         {
-            return View(BoardList.Boards);
+            return View(Repo.Boards);
         }
 
         public IActionResult About()
@@ -43,8 +47,8 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                BoardList.AddBoard(board);
-                return View("Index", BoardList.Boards);
+                Repo.AddBoard(board);
+                return View("Index", Repo.Boards);
             }
             else
                 return View();

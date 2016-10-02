@@ -1,0 +1,19 @@
+﻿@model SemaFlags.Models.Group
+
+@{
+    ViewData["Title"] = "Edit group details";
+}
+
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All"></div>
+    <p>
+        <label asp-for="Name">Group name:</label>
+        <input asp-for="Name" />
+    </p>
+    <p>
+        <label asp-for="Description">Group description:</label>
+        <input asp-for="Description" />
+    </p>
+    <button type="submit">Apply</button>
+</form>

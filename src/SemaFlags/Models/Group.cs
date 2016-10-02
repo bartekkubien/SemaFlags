@@ -6,29 +6,31 @@ using System.Threading.Tasks;
 
 namespace SemaFlags.Models
 {
-    public class Board
+    public class Group
     {
-        private List<Group> groups;
-
+        private List<Node> nodes;
         [Key]
         public int Id { get; set; }
         [Key]
-        [Required(ErrorMessage ="Please enter board name!")]
+        [Required(ErrorMessage = "Please enter group name!")]
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<Group> Groups {
-            get {
-                if (groups == null)
+
+        public List<Node> Nodes
+        {
+            get
+            {
+                if (nodes == null)
                 {
-                    groups = new List<Group>();
+                    nodes = new List<Node>();
                 }
-                return groups;
+                return nodes;
             }
-            set {
-                groups = value;
+            set
+            {
+                nodes = value;
             }
         }
-    
 
     }
 }
