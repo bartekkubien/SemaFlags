@@ -1,12 +1,14 @@
 ﻿@model SemaFlags.Models.Group
 
 @{
-    ViewData["Title"] = "Create board";
+    ViewData["Title"] = "Create group";
 }
 
 
 <form asp-action="Add" method="post">
     <div asp-validation-summary="All"></div>
+    <input asp-for="boardId"  readonly hidden value="@ViewBag.Id"/>
+
     <p>
         <label asp-for="Name">Group name:</label>
         <input asp-for="Name" />

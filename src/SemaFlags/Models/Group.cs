@@ -8,7 +8,7 @@ namespace SemaFlags.Models
 {
     public class Group
     {
-        private List<Node> nodes;
+
         [Key]
         public int Id { get; set; }
         [Key]
@@ -16,21 +16,7 @@ namespace SemaFlags.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public List<Node> Nodes
-        {
-            get
-            {
-                if (nodes == null)
-                {
-                    nodes = new List<Node>();
-                }
-                return nodes;
-            }
-            set
-            {
-                nodes = value;
-            }
-        }
+        public int boardId { get; set; }
 
     }
 }

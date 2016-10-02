@@ -17,7 +17,11 @@ namespace SemaFlags.Controllers
         [HttpGet]
         public IActionResult Index(int? id)
         {
-            return View(Repo.Boards.FirstOrDefault(b => b.Id == id));
+            Board board = Repo.Boards.FirstOrDefault(b => b.Id == id);
+            ViewBag.Id = id;
+            ViewBag.Name = board.Name;
+            ViewBag.Description = board.Description;
+            return View(Repo.Groups.Where(g => g.boardId == id));
         }
 
         [HttpGet]

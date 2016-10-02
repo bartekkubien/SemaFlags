@@ -37,21 +37,21 @@ namespace SemaFlags.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ViewResult Board()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ViewResult Board(Board board)
-        {
-            if (ModelState.IsValid)
-            {
-                Repo.AddBoard(board);
-                return View("Index", Repo.Boards);
-            }
-            else
-                return View();
-        }
+        //[HttpGet]
+        //public ViewResult Board()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public ViewResult Board(Board board)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        Repo.AddBoard(board);
+        //        return View("Index", Repo.Boards);
+        //    }
+        //    else
+        //        return View();
+        //}
     }
 }
