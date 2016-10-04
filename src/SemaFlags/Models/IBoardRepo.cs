@@ -9,6 +9,7 @@ namespace SemaFlags.Models
     {
         List<Board> Boards { get; }
         List<Group> Groups { get; }
+        List<Node> Nodes { get; }
 
         void AddBoard(Board board);
 
@@ -21,6 +22,12 @@ namespace SemaFlags.Models
         void EditGroup(Group group);
 
         void DeleteGroup(Group group);
+
+        void AddNode(Node node);
+
+        void EditNode(Node node);
+
+        void DeleteNode(Node node);
 
     }
 }

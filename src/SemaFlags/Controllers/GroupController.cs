@@ -17,8 +17,11 @@ namespace SemaFlags.Controllers
         [HttpGet]
         public IActionResult Index( int groupID)
         {
-            return View(Repo.Groups.FirstOrDefault(g=>g.Id == groupID)
-                );
+            Group group = Repo.Groups.FirstOrDefault(g => g.Id == groupID);
+            ViewBag.Id = groupID;
+            ViewBag.Name = group.Name;
+            ViewBag.Description = group.Description;
+            return View(Repo.Nodes.Where(n => n.GroupId == groupID));
         }
 
         [HttpGet]
@@ -36,12 +39,12 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Board board = Repo.Boards.FirstOrDefault(b => b.Id == group.boardId);
+                Board board = Repo.Boards.FirstOrDefault(b => b.Id == group.BoardId);
                 Repo.AddGroup(group);
                 ViewBag.Id = board.Id;
                 ViewBag.Name = board.Name;
                 ViewBag.Description = board.Description;
-                return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g=>g.boardId == group.boardId));
+                return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g=>g.BoardId == group.BoardId));
             }
             else
                 return View();
@@ -59,7 +62,7 @@ namespace SemaFlags.Controllers
             if (ModelState.IsValid)
             {
                 Repo.EditGroup(group);
-                return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g => g.boardId == group.boardId));
+                return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g => g.BoardId == group.BoardId));
             }
             else
                 return View();
@@ -68,9 +71,9 @@ namespace SemaFlags.Controllers
         public IActionResult Delete(int groupID)
         {
             Group group = Repo.Groups.FirstOrDefault(g => g.Id == groupID);
-            int boardId = group.boardId;
+            int boardId = group.BoardId;
             Repo.DeleteGroup(group);
-            return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g => g.boardId == boardId));
+            return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g => g.BoardId == boardId));
         }
 
     }

@@ -21,7 +21,7 @@ namespace SemaFlags.Controllers
             ViewBag.Id = id;
             ViewBag.Name = board.Name;
             ViewBag.Description = board.Description;
-            return View(Repo.Groups.Where(g => g.boardId == id));
+            return View(Repo.Groups.Where(g => g.BoardId == id));
         }
 
         [HttpGet]

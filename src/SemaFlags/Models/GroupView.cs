@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SemaFlags.Models
 {
-    public class Board : Base
+    public class GroupView : Group
     {
-
+        List<Node> Nodes;
     }
 }

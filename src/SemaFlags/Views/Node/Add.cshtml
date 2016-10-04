@@ -1,0 +1,19 @@
+﻿@model SemaFlags.Models.Board
+
+@{
+    ViewData["Title"] = "Create board";
+}
+
+
+<form asp-action="Add" method="post">
+    <div asp-validation-summary="All"></div>
+    <p>
+        <label asp-for="Name">Board name:</label>
+        <input asp-for="Name" />
+    </p>
+    <p>
+        <label asp-for="Description">Board description:</label>
+        <input asp-for="Description" />
+    </p>
+    <button type="submit">Create</button>
+</form>

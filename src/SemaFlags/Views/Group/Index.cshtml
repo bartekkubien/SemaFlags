@@ -1,17 +1,15 @@
-﻿@model SemaFlags.Models.Group
+﻿@model IEnumerable<SemaFlags.Models.Node>
 
 @{
     ViewData["Title"] = "Group details";
 }
 
-
-
 <p>
-    <label asp-for="Name">@Model.Name</label>
+    <label>Group: @ViewBag.Name</label>
 
 </p>
 <p>
-    <label asp-for="Description">@Model.Description</label>
+    <label>@ViewBag.Description</label>
 </p>
 
 <p>
@@ -24,21 +22,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SemaFlags.Models.Node g in Model.Nodes)
+            @foreach (SemaFlags.Models.Node n in Model)
             {
                 <tr>
-                    <td>@g.Id</td>
-                    <td><a asp-action="Index" asp-controller="Group" asp-route-id=@g.Id>@g.Name</a></td>
-                    <td>@g.Description</td>
+                    <td>@n.Id</td>
+                    <td><a asp-action="Index" asp-controller="Node" asp-route-id=@n.Id>@n.Name</a></td>
+                    <td>@n.Description</td>
                     <td>
-                        <a asp-action="Edit" asp-controller="Group" asp-route-id=@g.Id>Edit</a>
-                        <a asp-action="Delete" asp-controller="Group" asp-route-id=@g.Id>Delete</a>
+                        <a asp-action="Edit" asp-controller="Node" asp-route-id=@n.Id>Edit</a>
+                        <a asp-action="Delete" asp-controller="Node" asp-route-id=@n.Id>Delete</a>
 
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <a asp-action="Index" asp-controller="Home">List of boards.</a>
+    <a asp-action="Index" asp-controller="Board" asp-route-id=@ViewBag.Id>List of groups.</a>
 </p>
 
