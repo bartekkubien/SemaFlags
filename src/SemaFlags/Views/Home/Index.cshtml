@@ -7,7 +7,7 @@
 
 <p>
     <p>
-        <a asp-action="Add" asp-controller="Board">Add board</a>
+        <a asp-action="Add" asp-controller="Board"><span class="glyphicon glyphicon-plus"></span><b> Add board</b></a>
     </p>
     <p>Board list:</p>
     <p>
@@ -27,8 +27,8 @@
                         <td><a asp-action="Index" asp-controller="Board" asp-route-id=@b.Id>@b.Name</a></td>
                         <td>@b.Description</td>
                         <td>
-                            <a asp-action="Edit" asp-controller="Board" asp-route-id=@b.Id>Edit</a>
-                            <a asp-action="Delete" asp-controller="Board" asp-route-id=@b.Id>Delete</a>
+                            <a asp-action="Edit" asp-controller="Board" asp-route-id=@b.Id><span class="glyphicon glyphicon-edit"></span></a>
+                            <a asp-action="Delete" asp-controller="Board" asp-route-id=@b.Id><span class="glyphicon glyphicon-remove"></span></a>
 
                         </td>
                     </tr>

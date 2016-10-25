@@ -8,9 +8,12 @@ namespace SemaFlags.Models
 {
     public class Node: Base
     {
-
+        public Node() {
+            AssignedUserId = 0;
+        }
         public int GroupId { get; set; }
-        public string Color { get; set; }
+    
+        public int AssignedUserId { get; set; }
 
     }
 }

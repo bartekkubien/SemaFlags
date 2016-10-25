@@ -1,42 +1,53 @@
-﻿@model IEnumerable<SemaFlags.Models.Group>
+﻿@model SemaFlags.ViewModels.GroupView
 
 @{
     ViewData["Title"] = "Board details";
 }
 
 <p>
-    <label >Board: @ViewBag.Name</label>
-
+    <h4>
+        <label>Board: @ViewBag.Name</label>
+    </h4>
 </p>
 <p>
-    <label >@ViewBag.Description</label>
+    <label>@ViewBag.Description</label>
 </p>
-<a asp-action="Add" asp-controller="Group" asp-route-id="@ViewBag.Id">Add group</a>
-<p>
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (SemaFlags.Models.Group g in Model)
-            {
-                <tr>
-                    <td>@g.Id</td>
-                    <td><a asp-action="Index" asp-controller="Group" asp-route-id=@g.Id>@g.Name</a></td>
-                    <td>@g.Description</td>
-                    <td>
-                        <a asp-action="Edit" asp-controller="Group" asp-route-id=@g.Id>Edit</a>
-                        <a asp-action="Delete" asp-controller="Group" asp-route-id=@g.Id>Delete</a>
+<a asp-action="Add" asp-controller="Group" asp-route-id=@ViewBag.Id><span class="glyphicon glyphicon-plus"></span><b> Add group</b></a>
 
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <a asp-action="Index" asp-controller="Home">List of boards.</a>
-</p>
+
+<div class="row">
+    @foreach (SemaFlags.Models.Group g in Model.Groups)
+    {
+
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="font-weight: bold;"><h4><a asp-controller="Group" asp-route-id=@g.Id>@g.Name</a></h4></div>
+
+                <ul class="list-group">
+                    @foreach (SemaFlags.Models.Node n in Model.Nodes)
+                    {
+                        @if (n.GroupId == g.Id)
+                        {
+                            <li class="list-group-item">
+                                @{string boxId = "userBox" + n.Id;
+                                    string stateId = "state" + n.Id; }
+                                <p class="alignLeft">
+                                    <b><a asp-action="Index" asp-controller="Node" asp-route-id=@n.Id>@n.Name</a></b>
+                                </p>
+                                <p class="alignRight">
+                                    <span id="@stateId"> </span>
+                                    <select asp-items="@Model.Users" name="Id" id=@boxId asp-for=@n.AssignedUserId class="userBox"><option>Unassigned</option></select>
+                                </p>
+                                <div style="clear: both;"></div>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+
+</div>
+
+<a asp-action="Index" asp-controller="Home">List of boards.</a>
 

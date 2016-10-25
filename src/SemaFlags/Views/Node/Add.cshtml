@@ -1,18 +1,19 @@
-﻿@model SemaFlags.Models.Board
+﻿@model SemaFlags.Models.Node
 
 @{
-    ViewData["Title"] = "Create board";
+    ViewData["Title"] = "Create node";
 }
 
 
 <form asp-action="Add" method="post">
     <div asp-validation-summary="All"></div>
+    <input asp-for="GroupId" readonly hidden value="@ViewBag.GroupId" />
     <p>
-        <label asp-for="Name">Board name:</label>
+        <label asp-for="Name">Node name:</label>
         <input asp-for="Name" />
     </p>
     <p>
-        <label asp-for="Description">Board description:</label>
+        <label asp-for="Description">Node description:</label>
         <input asp-for="Description" />
     </p>
     <button type="submit">Create</button>

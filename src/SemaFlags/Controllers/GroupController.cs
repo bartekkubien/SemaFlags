@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
+using SemaFlags.ViewModels;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SemaFlags.Controllers
@@ -15,20 +16,21 @@ namespace SemaFlags.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index( int groupID)
+        public IActionResult Index( int? id)
         {
-            Group group = Repo.Groups.FirstOrDefault(g => g.Id == groupID);
-            ViewBag.Id = groupID;
+            Group group = Repo.Groups.FirstOrDefault(g => g.Id == id);
+            ViewBag.GroupId = id;
+            ViewBag.BoardId = group.BoardId;
             ViewBag.Name = group.Name;
             ViewBag.Description = group.Description;
-            return View(Repo.Nodes.Where(n => n.GroupId == groupID));
+            return View(Repo.Nodes.Where(n => n.GroupId == id));
         }
 
         [HttpGet]
-        public IActionResult Add(int id)
+        public IActionResult Add(int? id)
         {
             Board board = Repo.Boards.FirstOrDefault(b=>b.Id == id);
-            ViewBag.Id = id;
+            ViewBag.BoardId = id;
             ViewBag.Name = board.Name;
             ViewBag.Description = board.Description;
             return View();
@@ -41,19 +43,27 @@ namespace SemaFlags.Controllers
             {
                 Board board = Repo.Boards.FirstOrDefault(b => b.Id == group.BoardId);
                 Repo.AddGroup(group);
-                ViewBag.Id = board.Id;
-                ViewBag.Name = board.Name;
-                ViewBag.Description = board.Description;
-                return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g=>g.BoardId == group.BoardId));
+                //ViewBag.BoardId = board.Id;
+                //ViewBag.Name = board.Name;
+                //ViewBag.Description = board.Description;
+
+                //GroupView gv = new ViewModels.GroupView();
+                //gv.Groups = Repo.Groups.Where(g => g.BoardId == board.Id).ToList<Group>();
+                //foreach (Group g in gv.Groups)
+                //{
+                //    gv.Nodes.AddRange(Repo.Nodes.Where(n => n.GroupId == g.Id).ToList<Node>());
+                //}
+
+                return RedirectToAction("Index", "Board", new { id = board.Id });
             }
             else
                 return View();
         }
 
         [HttpGet]
-        public IActionResult Edit( int groupID)
+        public IActionResult Edit( int? id)
         {
-            return View(Repo.Groups.FirstOrDefault(g => g.Id == groupID));
+            return View(Repo.Groups.FirstOrDefault(g => g.Id == id));
         }
 
         [HttpPost]
@@ -62,7 +72,7 @@ namespace SemaFlags.Controllers
             if (ModelState.IsValid)
             {
                 Repo.EditGroup(group);
-                return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g => g.BoardId == group.BoardId));
+                return RedirectToAction("Index", "Board", new { id = group.BoardId });
             }
             else
                 return View();
@@ -73,7 +83,7 @@ namespace SemaFlags.Controllers
             Group group = Repo.Groups.FirstOrDefault(g => g.Id == groupID);
             int boardId = group.BoardId;
             Repo.DeleteGroup(group);
-            return View("~/Views/Board/Index.cshtml", Repo.Groups.Where(g => g.BoardId == boardId));
+            return RedirectToAction("Index", "Board", new { id = boardId });
         }
 
     }

@@ -10,24 +10,21 @@ namespace SemaFlags.Models
         List<Board> Boards { get; }
         List<Group> Groups { get; }
         List<Node> Nodes { get; }
+        List<User> Users { get; }
 
         void AddBoard(Board board);
-
         void EditBoard(Board board);
-
         void DeleteBoard(Board board);
-
         void AddGroup(Group group);
-
         void EditGroup(Group group);
-
         void DeleteGroup(Group group);
-
         void AddNode(Node node);
-
         void EditNode(Node node);
-
         void DeleteNode(Node node);
+        void AddUser(User user);
+        void EditUser(User user);
+        void DeleteUser(User user);
+
 
     }
 }

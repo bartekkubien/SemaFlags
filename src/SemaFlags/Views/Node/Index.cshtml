@@ -6,10 +6,11 @@
 
 <p>
     <label asp-for="Name">@Model.Name</label>
+</p>
+<p>
     <label asp-for="Description">@Model.Description</label>
 </p>
-
-<p>   
-    <a asp-action="Index" asp-controller="Group" asp-route-id=@ViewBag.Id>List of nodes.</a>
+<p>
+    <a asp-action="Index" asp-controller="Group" asp-route-id=@ViewBag.GroupId>Back to group @ViewBag.GroupName.</a>
 </p>
 

@@ -37,6 +37,8 @@ namespace SemaFlags
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddTransient<IBoardRepo, FakeRepo>();
+
+            //services.AddSingleton<IBoardRepo, FakeRepo>;
             services.AddMvc();
         }
 
@@ -58,16 +60,15 @@ namespace SemaFlags
                 app.UseExceptionHandler("/Home/Error");
             }
 
+           // app.UseStatusCodePages();
+
             app.UseApplicationInsightsExceptionTelemetry();
+
+            app.UseDeveloperExceptionPage();
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+using SemaFlags.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace SemaFlags.Controllers
 {
@@ -17,11 +19,23 @@ namespace SemaFlags.Controllers
         [HttpGet]
         public IActionResult Index(int? id)
         {
+            if (id == null) return View();
             Board board = Repo.Boards.FirstOrDefault(b => b.Id == id);
             ViewBag.Id = id;
             ViewBag.Name = board.Name;
             ViewBag.Description = board.Description;
-            return View(Repo.Groups.Where(g => g.BoardId == id));
+
+            GroupView gv = new ViewModels.GroupView();
+            gv.Groups = Repo.Groups.Where(g => g.BoardId == id).ToList<Group>();
+            
+            foreach (Group g in gv.Groups) {
+                gv.Nodes.AddRange(Repo.Nodes.Where(n => n.GroupId == g.Id).ToList<Node>());
+            }
+
+            foreach (User u in Repo.Users) {
+                gv.Users.Add(new SelectListItem { Value = u.Id.ToString(),  Text=u.Name});
+            }
+            return View(gv);
         }
 
         [HttpGet]
@@ -36,7 +50,7 @@ namespace SemaFlags.Controllers
             if (ModelState.IsValid)
             {
                 Repo.AddBoard(board);
-                return View("~/Views/Home/Index.cshtml", Repo.Boards);
+                return RedirectToAction("Index", "Home");
             }
             else
                 return View();
@@ -54,7 +68,7 @@ namespace SemaFlags.Controllers
             if (ModelState.IsValid)
             {
                 Repo.EditBoard(board);
-                return View("~/Views/Home/Index.cshtml", Repo.Boards);
+                return RedirectToAction("Index", "Home");
             }
             else
                 return View();
@@ -63,7 +77,7 @@ namespace SemaFlags.Controllers
         public IActionResult Delete(int id)
         {
             Repo.DeleteBoard(Repo.Boards.FirstOrDefault(b => b.Id == id));
-            return View("~/Views/Home/Index.cshtml", Repo.Boards);
+            return RedirectToAction("Index", "Home");
         }
 
     }
