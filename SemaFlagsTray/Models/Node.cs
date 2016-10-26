@@ -1,21 +1,21 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace SemaFlags.Models
+namespace SemaFlagsTray.Models
 {
+    [DataContract]
     public class Node: Base
     {
+        
         public Node() {
             AssignedUserId = 0;
         }
-        [JsonProperty("GroupId", Order = 5)]
+        [DataMember(Order = 5)]
         public int GroupId { get; set; }
-
-        [JsonProperty("AssignedUserId", Order = 6)]
+        [DataMember(Order = 6)]
         public int AssignedUserId { get; set; }
 
     }

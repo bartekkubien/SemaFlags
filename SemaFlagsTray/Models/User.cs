@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
-namespace SemaFlags.Models
+namespace SemaFlagsTray.Models
 {
+    [DataContract]
     public class User: Base
     {
     }

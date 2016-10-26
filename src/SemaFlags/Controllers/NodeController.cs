@@ -52,8 +52,9 @@ namespace SemaFlags.Controllers
         }
 
         [HttpGet]
-        public ViewResult Edit(int? id)
+        public  IActionResult Edit(int? id)
         {
+           
             return View(Repo.Nodes.FirstOrDefault(g => g.Id == id));
         }
 
@@ -86,6 +87,7 @@ namespace SemaFlags.Controllers
 
         public void ChangeUser(int nodeId, int userId)
         {
+            System.Threading.Thread.Sleep(1000);
             Node Node = Repo.Nodes.FirstOrDefault(n => n.Id == nodeId);
             Node.AssignedUserId = userId;
         }
