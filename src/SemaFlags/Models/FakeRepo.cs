@@ -7,11 +7,12 @@ namespace SemaFlags.Models
 {
     public class FakeRepo : IBoardRepo
     {
-        private static List<Board> boards;
-        private static List<Group> groups;
-        private static List<Node> nodes;
-        private static List<User> users;
-        public List<Board> Boards
+        //todo add local database
+        static internal List<Board> boards;
+        static internal List<Group> groups;
+        static internal List<Node> nodes;
+        static internal List<User> users;
+        public IEnumerable<Board> Boards
         {
             get
             {
@@ -27,7 +28,7 @@ namespace SemaFlags.Models
             }
         }
 
-        public List<Group> Groups
+        public IEnumerable<Group> Groups
         {
             get
             {
@@ -45,7 +46,7 @@ namespace SemaFlags.Models
             }
 
         }
-        public List<Node> Nodes
+        public IEnumerable<Node> Nodes
         {
             get
             {
@@ -75,7 +76,7 @@ namespace SemaFlags.Models
             }
 
         }
-        public List<User> Users
+        public IEnumerable<User> Users
         {
             get
             {
@@ -93,15 +94,23 @@ namespace SemaFlags.Models
             }
 
         }
+
+        public void AddElement(Base element)
+        {
+            //todo
+            throw new System.NotImplementedException();
+
+        }
+
         public void AddBoard(Board board)
         {
-            board.Id = Boards.Count() > 0 ? Boards.Max(b => b.Id) + 1 : 0;
-            Boards.Add(board);
+            board.Id = boards.Count() > 0 ? boards.Max(b => b.Id) + 1 : 0;
+            boards.Add(board);
         }
 
         public void EditBoard(Board board)
         {
-            Board editBoard = Boards.FirstOrDefault(b => b.Id == board.Id);
+            Board editBoard = boards.FirstOrDefault(b => b.Id == board.Id);
             if (editBoard != null)
             {
                 editBoard.Name = board.Name;
@@ -112,19 +121,19 @@ namespace SemaFlags.Models
 
         public void DeleteBoard(Board board)
         {
+            boards = boards.Where(b => b.Id != board.Id).ToList();
 
-            Boards.Remove(board);
         }
 
         public void AddGroup(Group group)
         {
             group.Id = Groups.Count() > 0 ? Groups.Max(g => g.Id) + 1 : 0;
-            Groups.Add(group);
+            groups.Add(group);
         }
 
         public void EditGroup(Group group)
         {
-            Group editBoard = Groups.FirstOrDefault(g => g.Id == group.Id);
+            Group editBoard = groups.FirstOrDefault(g => g.Id == group.Id);
             if (editBoard != null)
             {
                 editBoard.Name = group.Name;
@@ -134,18 +143,18 @@ namespace SemaFlags.Models
 
         public void DeleteGroup(Group group)
         {
-            Groups.Remove(group);
+            groups = groups.Where(g => g.Id != group.Id).ToList();
         }
 
         public void AddNode(Node node)
         {
-            node.Id = Nodes.Count() > 0 ? Nodes.Max(g => g.Id) + 1 : 0;
-            Nodes.Add(node);
+            node.Id = nodes.Count() > 0 ? nodes.Max(g => g.Id) + 1 : 0;
+            nodes.Add(node);
         }
 
         public void EditNode(Node node)
         {
-            Node editNode = Nodes.FirstOrDefault(g => g.Id == node.Id);
+            Node editNode = nodes.FirstOrDefault(g => g.Id == node.Id);
             if (editNode != null)
             {
                 editNode.Name = node.Name;
@@ -155,17 +164,17 @@ namespace SemaFlags.Models
 
         public void DeleteNode(Node node)
         {
-            Nodes.Remove(node);
+            nodes = nodes.Where(n => n.Id != node.Id).ToList();
         }
 
         public void AddUser(User user)
         {
-            user.Id = Users.Count() > 0 ? Users.Max(g => g.Id) + 1 : 0;
-            Users.Add(user);
+            user.Id = users.Count() > 0 ? users.Max(g => g.Id) + 1 : 0;
+            users.Add(user);
         }
         public void EditUser(User user)
         {
-            User editUser = Users.FirstOrDefault(u => u.Id == user.Id);
+            User editUser = users.FirstOrDefault(u => u.Id == user.Id);
             if (editUser != null)
             {
                 editUser.Name = user.Name;
@@ -174,7 +183,7 @@ namespace SemaFlags.Models
         }
         public void DeleteUser(User user)
         {
-            Users.Remove(user);
+            users = users.Where(u => u.Id != user.Id).ToList();
         }
     }
 }

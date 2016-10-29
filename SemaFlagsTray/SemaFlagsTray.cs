@@ -25,7 +25,7 @@ namespace SemaFlagsTray
         //[STAThread]
         static void Main()
         {
-           
+
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new frmBoard());
@@ -50,40 +50,70 @@ namespace SemaFlagsTray
             //ge.Name = "Dev";
             //ge.Description = "Development machines";
             //MemoryStream myStream = new MemoryStream();
+            System.IO.Stream GroupsStream = null;
+            try
+            {
+                GroupsStream = await GetJSONasStream("api/APIGroup/0");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetJSONasStream for Group failed with:");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Dear sir, press any key to finish!");
+                Console.ReadKey();
+                return;
+            }
 
-            System.IO.Stream GroupsStream = await GetJSONasStream("api/APIGroup/0");
             DataContractJsonSerializer groupSerializer = new DataContractJsonSerializer(typeof(Group[]));
             GroupsStream.Position = 0;
             Group[] groupArray = (Group[])groupSerializer.ReadObject(GroupsStream);
 
-            List<Task<System.IO.Stream>> tasks = new List<Task<System.IO.Stream>>();            
+            List<Task<System.IO.Stream>> tasks = new List<Task<System.IO.Stream>>();
             foreach (Group currentGroup in groupArray)
             {
-                tasks.Add(GetJSONasStream("api/APINode/" + currentGroup.Id ));           
+                tasks.Add(GetJSONasStream("api/APINode/" + currentGroup.Id));
             }
+            Console.WriteLine("Tasks added!");
+            //tasks.Add(ThrowException());
+
             Groups.AddRange(groupArray);
             DataContractJsonSerializer nodeSerializer = new DataContractJsonSerializer(typeof(Node[]));
-            foreach (Task<System.IO.Stream> t in tasks) {
-                System.IO.Stream nodesStream = await t;              
-                Nodes.AddRange((Node[])nodeSerializer.ReadObject(nodesStream));
-            }
-
             DataContractJsonSerializer userSerializer = new DataContractJsonSerializer(typeof(User[]));
 
+            try
+            {
+                foreach (Task<System.IO.Stream> t in tasks)
+                {
+                    System.IO.Stream nodesStream = await t;
+                    Nodes.AddRange((Node[])nodeSerializer.ReadObject(nodesStream));
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine("GetJSONasStream for Node failed with:");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Dear sir, press any key to finish!");
+                Console.ReadKey();
+                return ;
+
+            }
+
+        
             System.IO.Stream usersStream = await GetJSONasStream("api/APIUser/");
             User[] usersArray = (User[])userSerializer.ReadObject(usersStream);
             Users.AddRange(usersArray);
 
-            foreach (Group group in Groups) {
+            foreach (Group group in Groups)
+            {
                 Console.WriteLine(group.Id + "\t" + group.Name + "\t" + group.Description);
-                foreach (Node node in Nodes.Where(n => n.GroupId == group.Id)) {
-                    Console.WriteLine(" - " + node.Id + "\t" + node.Name + "\t" + node.Description + "\t" + (node.AssignedUserId > 0 ? "Assigned user: " + Users.FirstOrDefault(u=>u.Id == node.AssignedUserId).Name : ""));
+                foreach (Node node in Nodes.Where(n => n.GroupId == group.Id))
+                {
+                    Console.WriteLine(" - " + node.Id + "\t" + node.Name + "\t" + node.Description + "\t" + (node.AssignedUserId > 0 ? "Assigned user: " + Users.FirstOrDefault(u => u.Id == node.AssignedUserId).Name : ""));
                 }
                 Console.WriteLine("==================================================================");
             }
 
             Console.WriteLine("Dear sir, press any key to finish!");
-            Console.ReadKey ();
+            Console.ReadKey();
         }
 
         static async Task<String> GetJSONasString(string path)
@@ -94,18 +124,28 @@ namespace SemaFlagsTray
             {
                 return await response.Content.ReadAsStringAsync();
             }
-            return null;                      
+            return null;
         }
 
         static async Task<System.IO.Stream> GetJSONasStream(string path)
         {
+            Console.WriteLine("Preparing " + path);
             String json;
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsStreamAsync();
+                System.IO.Stream ret = await response.Content.ReadAsStreamAsync();
+                Console.WriteLine("Got " + path);
+                return ret;
             }
             return null;
+        }
+
+        static async Task<System.IO.Stream> ThrowException()
+        {
+            throw new Exception("No can do");
+            return null;
+
         }
     }
 }

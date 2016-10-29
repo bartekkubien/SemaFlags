@@ -17,9 +17,9 @@ namespace SemaFlags.Controllers
         [HttpGet]
         public IActionResult Index(int? id)
         {
-            Node node = Repo.Nodes.FirstOrDefault(n => n.Id == id);
-            ViewBag.GroupId = node.GroupId;
-            ViewBag.GroupName = Repo.Groups.FirstOrDefault(g => g.Id == node.GroupId).Name;
+            Node node = Repo?.Nodes?.FirstOrDefault(n => n.Id == id);
+            ViewBag.GroupId = node?.GroupId;
+            ViewBag.GroupName = Repo?.Groups.FirstOrDefault(g => g.Id == node.GroupId).Name;
             return View(node);
 
         }
@@ -27,10 +27,10 @@ namespace SemaFlags.Controllers
         [HttpGet]
         public IActionResult Add(int? id)
         {
-            Group group = Repo.Groups.FirstOrDefault(n => n.Id == id);
+            Group group = Repo?.Groups?.FirstOrDefault(n => n.Id == id);
             ViewBag.GroupId = id;
-            ViewBag.Name = group.Name;
-            ViewBag.Description = group.Description;
+            ViewBag.Name = group?.Name;
+            ViewBag.Description = group?.Description;
             return View();
         }
 
@@ -39,11 +39,8 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Board board = Repo.Boards.FirstOrDefault(b => b.Id == Node.GroupId);
-                Repo.AddNode(Node);
-                //ViewBag.BoardId = board.Id;
-                //ViewBag.Name = board.Name;
-                //ViewBag.Description = board.Description;
+                Board board = Repo?.Boards?.FirstOrDefault(b => b.Id == Node.GroupId);
+                Repo?.AddNode(Node);
 
                 return RedirectToAction("Index", "Group", new { id=Node.GroupId });
             }
@@ -52,18 +49,15 @@ namespace SemaFlags.Controllers
         }
 
         [HttpGet]
-        public  IActionResult Edit(int? id)
-        {
-           
-            return View(Repo.Nodes.FirstOrDefault(g => g.Id == id));
-        }
+        public  IActionResult Edit(int? id) =>  View(Repo?.Nodes?.FirstOrDefault(g => g.Id == id));
+        
 
         [HttpPost]
         public IActionResult Edit(Node Node)
         {
             if (ModelState.IsValid)
             {
-                Repo.EditNode(Node);
+                Repo?.EditNode(Node);
                 return RedirectToAction("Index", "Group", new { id = Node.GroupId });
             }
             else
@@ -72,11 +66,12 @@ namespace SemaFlags.Controllers
 
         public IActionResult Delete(int? id)
         {
-            Node Node = Repo.Nodes.FirstOrDefault(g => g.Id == id);          
+            Node Node = Repo?.Nodes?.FirstOrDefault(g => g.Id == id);
+            if (Node == null) RedirectToAction("Error");       
             int groupId = Node.GroupId;
-            Repo.DeleteNode(Node);
+            Repo?.DeleteNode(Node);
 
-            Group group = Repo.Groups.FirstOrDefault(g => g.Id == groupId);
+            Group group = Repo?.Groups?.FirstOrDefault(g => g.Id == groupId);
             //ViewBag.BoardId = group.BoardId;
             //ViewBag.Name = group.Name;
             //ViewBag.Description = gro up.Description;
@@ -88,7 +83,7 @@ namespace SemaFlags.Controllers
         public void ChangeUser(int nodeId, int userId)
         {
             System.Threading.Thread.Sleep(1000);
-            Node Node = Repo.Nodes.FirstOrDefault(n => n.Id == nodeId);
+            Node Node = Repo?.Nodes?.FirstOrDefault(n => n.Id == nodeId);
             Node.AssignedUserId = userId;
         }
     }

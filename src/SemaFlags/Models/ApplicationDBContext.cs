@@ -14,7 +14,7 @@ namespace SemaFlags.Models
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options) { }
 
-        public DbSet<Board> Boards { get; set; }
+       
 
     }
 }

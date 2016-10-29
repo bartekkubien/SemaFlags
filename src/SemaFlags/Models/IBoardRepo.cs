@@ -7,10 +7,12 @@ namespace SemaFlags.Models
 {
     public interface IBoardRepo
     {
-        List<Board> Boards { get; }
-        List<Group> Groups { get; }
-        List<Node> Nodes { get; }
-        List<User> Users { get; }
+        IEnumerable<Board> Boards { get; }
+        IEnumerable<Group> Groups { get; }
+        IEnumerable<Node> Nodes { get; }
+        IEnumerable<User> Users { get; }
+
+        void AddElement(Base element);
 
         void AddBoard(Board board);
         void EditBoard(Board board);

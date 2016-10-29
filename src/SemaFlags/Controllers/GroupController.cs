@@ -43,16 +43,6 @@ namespace SemaFlags.Controllers
             {
                 Board board = Repo.Boards.FirstOrDefault(b => b.Id == group.BoardId);
                 Repo.AddGroup(group);
-                //ViewBag.BoardId = board.Id;
-                //ViewBag.Name = board.Name;
-                //ViewBag.Description = board.Description;
-
-                //GroupView gv = new ViewModels.GroupView();
-                //gv.Groups = Repo.Groups.Where(g => g.BoardId == board.Id).ToList<Group>();
-                //foreach (Group g in gv.Groups)
-                //{
-                //    gv.Nodes.AddRange(Repo.Nodes.Where(n => n.GroupId == g.Id).ToList<Node>());
-                //}
 
                 return RedirectToAction("Index", "Board", new { id = board.Id });
             }

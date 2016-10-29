@@ -17,9 +17,7 @@ namespace SemaFlags.Controllers
             repository = repo;
         }
 
-        protected IBoardRepo Repo {
-            get { return repository; }
-        }
+        protected IBoardRepo Repo => repository;
 
     }
 }
