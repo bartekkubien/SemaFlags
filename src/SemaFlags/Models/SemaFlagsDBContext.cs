@@ -9,12 +9,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SemaFlags.Models
 {
-    public class ApplicationDBContext : DbContext {
+    public class SemaFlagsDBContext : DbContext
+    {
         // GET: /<controller>/
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
+        public SemaFlagsDBContext(DbContextOptions<SemaFlagsDBContext> options)
             : base(options) { }
 
+        public DbSet<Board> Boards { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Node> Nodes { get; set; }
+        public DbSet<User> Users { get; set; }
        
-
     }
 }
