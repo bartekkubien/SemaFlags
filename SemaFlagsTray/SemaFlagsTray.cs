@@ -53,7 +53,7 @@ namespace SemaFlagsTray
             System.IO.Stream GroupsStream = null;
             try
             {
-                GroupsStream = await GetJSONasStream("api/APIGroup/0");
+                GroupsStream = await GetJSONasStream("api/APIGroup/9");
             }
             catch (Exception ex)
             {

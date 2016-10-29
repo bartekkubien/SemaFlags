@@ -14,7 +14,7 @@ namespace SemaFlags.Models
             context = ctx;
         }
         public IEnumerable<Group> Groups => context.Groups;
-        public void SaveElement(Group element)
+        public void SaveGroup(Group element)
         {
 
             if (element.Id == 0)
@@ -34,7 +34,7 @@ namespace SemaFlags.Models
             context.SaveChanges();
         }
 
-        public Base RemoveElement(int id)
+        public Base RemoveGroup(int id)
         {
             Group dbEntry = context.Groups.FirstOrDefault(e => e.Id == id);
             if (dbEntry != null) {

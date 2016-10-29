@@ -20,7 +20,7 @@ namespace SemaFlags.API
         //}
        
 
-        public APIGroupController(IBoardRepo repo) : base(repo) { }
+        public APIGroupController(ISemaFlagsRepository repo) : base(repo) { }
 
         //GET api/values/5
         [HttpGet("{id}")]

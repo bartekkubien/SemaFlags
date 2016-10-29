@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SemaFlags.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SemaFlags
 {
@@ -36,8 +37,11 @@ namespace SemaFlags
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-            services.AddTransient<IBoardRepo, FakeRepo>();
-
+            //services.AddTransient<IBoardRepo, FakeRepo>();
+            services.AddDbContext<SemaFlagsDBContext>(options => {
+                options.UseSqlServer(Configuration["Data:SemaFlags:ConnectionString"]);
+            });
+            services.AddTransient<ISemaFlagsRepository, EFSemaFlagsRepository>();
             //services.AddSingleton<IBoardRepo, FakeRepo>;
             services.AddMvc();
         }
@@ -69,6 +73,8 @@ namespace SemaFlags
             app.UseStaticFiles();
 
             app.UseMvcWithDefaultRoute();
+
+            SeedData.EnsurePopulated(app);
         }
     }
 }

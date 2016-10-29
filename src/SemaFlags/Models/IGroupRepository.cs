@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace SemaFlags.Models
 {
-    public interface IBoardRepository
+    public interface IGroupRepository
     {
-         IEnumerable<Board> Boards { get; }
-         void SaveElement(Board element);
-         Base RemoveElement(int id);
+        IEnumerable<Group> Groups { get; }
+        void SaveGroup(Group element);
+        Base RemoveGroup(int id);
     }
 }

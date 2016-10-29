@@ -13,7 +13,7 @@ namespace SemaFlags.API
     public class APINodeController : BaseController
     {
        
-        public APINodeController(IBoardRepo repo) : base(repo) { }
+        public APINodeController(ISemaFlagsRepository repo) : base(repo) { }
   
         // GET: api/values
         //[HttpGet]

@@ -8,7 +8,7 @@ namespace SemaFlags.Models
     public interface INodeRepository
     {
         IEnumerable<Node> Nodes { get; }
-        void SaveElement(Node element);
-        Base RemoveElement(int id);
+        void SaveNode(Node element);
+        Base RemoveNode(int id);
     }
 }

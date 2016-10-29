@@ -7,8 +7,8 @@ namespace SemaFlags.Models
 {
     public interface IUserRepository
     {
-        public IEnumerable<User> Userps { get; }
-        public void SaveElement(User element);
-        public Base RemoveElement(int id);
+        IEnumerable<User> Users { get; }
+        void SaveUser(User element);
+        Base RemoveUser(int id);
     }
 }

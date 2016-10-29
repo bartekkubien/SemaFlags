@@ -9,7 +9,7 @@ namespace SemaFlags.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(IBoardRepo repo):base(repo)
+        public HomeController(ISemaFlagsRepository repo):base(repo)
         {
             
         }

@@ -10,7 +10,7 @@ namespace SemaFlags.Controllers
 {
     public class NodeController : BaseController
     {
-        public NodeController(IBoardRepo repo) : base(repo)
+        public NodeController(ISemaFlagsRepository repo) : base(repo)
         {
         }
 
@@ -40,7 +40,7 @@ namespace SemaFlags.Controllers
             if (ModelState.IsValid)
             {
                 Board board = Repo?.Boards?.FirstOrDefault(b => b.Id == Node.GroupId);
-                Repo?.AddNode(Node);
+                Repo?.SaveNode(Node);
 
                 return RedirectToAction("Index", "Group", new { id=Node.GroupId });
             }
@@ -57,19 +57,19 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Repo?.EditNode(Node);
+                Repo?.SaveNode(Node);
                 return RedirectToAction("Index", "Group", new { id = Node.GroupId });
             }
             else
                 return View();
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
             Node Node = Repo?.Nodes?.FirstOrDefault(g => g.Id == id);
             if (Node == null) RedirectToAction("Error");       
             int groupId = Node.GroupId;
-            Repo?.DeleteNode(Node);
+            Repo?.RemoveNode(id);
 
             Group group = Repo?.Groups?.FirstOrDefault(g => g.Id == groupId);
             //ViewBag.BoardId = group.BoardId;
@@ -83,8 +83,9 @@ namespace SemaFlags.Controllers
         public void ChangeUser(int nodeId, int userId)
         {
             System.Threading.Thread.Sleep(1000);
-            Node Node = Repo?.Nodes?.FirstOrDefault(n => n.Id == nodeId);
-            Node.AssignedUserId = userId;
+            Node node = Repo?.Nodes?.FirstOrDefault(n => n.Id == nodeId);
+            node.AssignedUserId = userId;
+            Repo.SaveNode(node);
         }
     }
 

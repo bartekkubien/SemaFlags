@@ -11,7 +11,7 @@ namespace SemaFlags.Controllers
 {
     public class GroupController : BaseController
     {
-        public GroupController(IBoardRepo repo) : base(repo)
+        public GroupController(ISemaFlagsRepository repo) : base(repo)
         {
         }
 
@@ -41,10 +41,10 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Board board = Repo.Boards.FirstOrDefault(b => b.Id == group.BoardId);
-                Repo.AddGroup(group);
+                int boardId = group.BoardId;
+                Repo.SaveGroup(group);
 
-                return RedirectToAction("Index", "Board", new { id = board.Id });
+                return RedirectToAction("Index", "Board", new { id = boardId });
             }
             else
                 return View();
@@ -61,7 +61,7 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Repo.EditGroup(group);
+                Repo.SaveGroup(group);
                 return RedirectToAction("Index", "Board", new { id = group.BoardId });
             }
             else
@@ -72,7 +72,7 @@ namespace SemaFlags.Controllers
         {
             Group group = Repo.Groups.FirstOrDefault(g => g.Id == groupID);
             int boardId = group.BoardId;
-            Repo.DeleteGroup(group);
+            Repo.RemoveGroup(groupID);
             return RedirectToAction("Index", "Board", new { id = boardId });
         }
 

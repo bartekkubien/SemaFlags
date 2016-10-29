@@ -12,7 +12,7 @@ namespace SemaFlags.Controllers
 {
     public class BoardController : BaseController
     {
-        public BoardController(IBoardRepo repo) : base(repo)
+        public BoardController(ISemaFlagsRepository repo) : base(repo)
         {
         }
 
@@ -49,7 +49,7 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Repo.AddBoard(board);
+                Repo.SaveBoard(board);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -67,7 +67,7 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Repo.EditBoard(board);
+                Repo.SaveBoard(board);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -76,7 +76,7 @@ namespace SemaFlags.Controllers
 
         public IActionResult Delete(int id)
         {
-            Repo.DeleteBoard(Repo.Boards.FirstOrDefault(b => b.Id == id));
+            Repo.RemoveBoard(id);
             return RedirectToAction("Index", "Home");
         }
 

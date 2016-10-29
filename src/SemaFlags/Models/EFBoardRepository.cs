@@ -14,7 +14,7 @@ namespace SemaFlags.Models
             context = ctx;
         }
        public IEnumerable<Board> Boards => context.Boards;
-        public void SaveElement(Board element)
+        public void SaveBoard(Board element)
         {
 
             if (element.Id == 0)
@@ -33,7 +33,7 @@ namespace SemaFlags.Models
             context.SaveChanges();
         }
 
-        public Base RemoveElement(int id)
+        public Base RemoveBoard(int id)
         {
             Board dbEntry = context.Boards.FirstOrDefault(e => e.Id == id);
             if (dbEntry != null) {

@@ -10,14 +10,14 @@ namespace SemaFlags.Controllers
 {
     public class BaseController : Controller
     {
-        private IBoardRepo repository;
+        private ISemaFlagsRepository repository;
 
-        public BaseController(IBoardRepo repo)
+        public BaseController(ISemaFlagsRepository repo)
         {
             repository = repo;
         }
 
-        protected IBoardRepo Repo => repository;
+        protected ISemaFlagsRepository Repo => repository;
 
     }
 }

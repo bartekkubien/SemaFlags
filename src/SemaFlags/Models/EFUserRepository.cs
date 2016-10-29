@@ -14,7 +14,7 @@ namespace SemaFlags.Models
             context = ctx;
         }
         public IEnumerable<User> Users => context.Users;
-        public void SaveElement(User element)
+        public void SaveUser(User element)
         {
 
             if (element.Id == 0)
@@ -33,7 +33,7 @@ namespace SemaFlags.Models
             context.SaveChanges();
         }
 
-        public Base RemoveElement(int id)
+        public Base RemoveUser(int id)
         {
             User dbEntry = context.Users.FirstOrDefault(e => e.Id == id);
             if (dbEntry != null) {
