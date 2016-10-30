@@ -4,22 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+using SemaFlags.DAL;
 
 namespace SemaFlags.Controllers
 {
     public class NodeController : BaseController
     {
-        public NodeController(ISemaFlagsRepository repo) : base(repo)
+        public NodeController(SemaFlagsDBContext repo) : base(repo)
         {
         }
 
         [HttpGet]
         public IActionResult Index(int? id)
         {
-            Node node = Repo?.Nodes?.FirstOrDefault(n => n.Id == id);
+            Node node = Repo?.NodeRepository?.Elements?.FirstOrDefault(n => n.Id == id);
             ViewBag.GroupId = node?.GroupId;
-            ViewBag.GroupName = Repo?.Groups.FirstOrDefault(g => g.Id == node.GroupId).Name;
+            ViewBag.GroupName = Repo?.GroupRepository?.Elements?.FirstOrDefault(g => g.Id == node.GroupId).Name;
             return View(node);
 
         }
@@ -27,21 +27,21 @@ namespace SemaFlags.Controllers
         [HttpGet]
         public IActionResult Add(int? id)
         {
-            Group group = Repo?.Groups?.FirstOrDefault(n => n.Id == id);
+            Group group = Repo?.GroupRepository?.Elements?.FirstOrDefault(n => n.Id == id);
             ViewBag.GroupId = id;
             ViewBag.Name = group?.Name;
             ViewBag.Description = group?.Description;
             return View();
         }
-
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Add(Node Node)
         {
             if (ModelState.IsValid)
             {
-                Board board = Repo?.Boards?.FirstOrDefault(b => b.Id == Node.GroupId);
-                Repo?.SaveNode(Node);
-
+                Board board = Repo?.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == Node.GroupId);
+                Repo?.NodeRepository?.SaveElement(Node);
+                Repo?.Save();
                 return RedirectToAction("Index", "Group", new { id=Node.GroupId });
             }
             else
@@ -49,15 +49,16 @@ namespace SemaFlags.Controllers
         }
 
         [HttpGet]
-        public  IActionResult Edit(int? id) =>  View(Repo?.Nodes?.FirstOrDefault(g => g.Id == id));
+        public  IActionResult Edit(int? id) =>  View(Repo?.NodeRepository?.Elements?.FirstOrDefault(g => g.Id == id));
         
-
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit(Node Node)
         {
             if (ModelState.IsValid)
             {
-                Repo?.SaveNode(Node);
+                Repo?.NodeRepository?.SaveElement(Node);
+                Repo?.Save();
                 return RedirectToAction("Index", "Group", new { id = Node.GroupId });
             }
             else
@@ -66,26 +67,27 @@ namespace SemaFlags.Controllers
 
         public IActionResult Delete(int id)
         {
-            Node Node = Repo?.Nodes?.FirstOrDefault(g => g.Id == id);
-            if (Node == null) RedirectToAction("Error");       
-            int groupId = Node.GroupId;
-            Repo?.RemoveNode(id);
-
-            Group group = Repo?.Groups?.FirstOrDefault(g => g.Id == groupId);
+            //Node Node = Repo?.NodeRepository?.Elements?.FirstOrDefault(g => g.Id == id);
+           // if (Node == null) RedirectToAction("Error");       
+           // int groupId = Node.GroupId;
+            Node node  = Repo?.NodeRepository?.RemoveElement(id);
+            Repo?.Save();
+            //Group group = Repo?.GroupRepository?.Elements?.FirstOrDefault(g => g.Id == groupId);
             //ViewBag.BoardId = group.BoardId;
             //ViewBag.Name = group.Name;
             //ViewBag.Description = gro up.Description;
 
-            return RedirectToAction("Index", "Group", new { id = groupId });
+            return RedirectToAction("Index", "Group", new { id = node.GroupId  });
         }
 
 
         public void ChangeUser(int nodeId, int userId)
         {
             System.Threading.Thread.Sleep(1000);
-            Node node = Repo?.Nodes?.FirstOrDefault(n => n.Id == nodeId);
+            Node node = Repo?.NodeRepository?.Elements?.FirstOrDefault(n => n.Id == nodeId);
             node.AssignedUserId = userId;
-            Repo.SaveNode(node);
+            Repo?.NodeRepository?.SaveElement(node);
+            Repo?.Save();
         }
     }
 

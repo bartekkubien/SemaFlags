@@ -4,20 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+using SemaFlags.DAL;
 
 namespace SemaFlags.Controllers
 {
     public class BaseController : Controller
     {
-        private ISemaFlagsRepository repository;
+        private UnitOfWork repository;
+      
 
-        public BaseController(ISemaFlagsRepository repo)
+        public BaseController(SemaFlagsDBContext repo)
         {
-            repository = repo;
+            repository = new DAL.UnitOfWork( repo);
+          
         }
 
-        protected ISemaFlagsRepository Repo => repository;
+        protected UnitOfWork Repo => repository;
 
     }
 }

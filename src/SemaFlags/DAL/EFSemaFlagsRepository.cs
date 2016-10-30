@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using SemaFlags.Models;
 
-namespace SemaFlags.Models
+namespace SemaFlags.DAL
+
 {
     public class EFSemaFlagsRepository : ISemaFlagsRepository
     {
@@ -13,8 +14,8 @@ namespace SemaFlags.Models
         {
             context = ctx;
         }
-       public IEnumerable<Board> Boards => context.Boards;
-        public void SaveBoard(Board element)
+       public IQueryable<Board> Boards => context.Boards;
+        public void SaveElement(Board element)
         {
 
             if (element.Id == 0)
@@ -33,7 +34,7 @@ namespace SemaFlags.Models
             context.SaveChanges();
         }
 
-        public Base RemoveBoard(int id)
+        public Base RemoveElement(int id)
         {
             Board dbEntry = context.Boards.FirstOrDefault(e => e.Id == id);
             if (dbEntry != null) {
@@ -42,7 +43,7 @@ namespace SemaFlags.Models
             }
             return dbEntry;
         }
-        public IEnumerable<Group> Groups => context.Groups;
+        public IQueryable<Group> Groups => context.Groups;
         public void SaveGroup(Group element)
         {
 
@@ -75,7 +76,7 @@ namespace SemaFlags.Models
             return dbEntry;
         }
 
-        public IEnumerable<Node> Nodes => context.Nodes;
+        public IQueryable<Node> Nodes => context.Nodes;
         public void SaveNode(Node element)
         {
 
@@ -109,7 +110,7 @@ namespace SemaFlags.Models
             return dbEntry;
         }
 
-        public IEnumerable<User> Users => context.Users;
+        public IQueryable<User> Users => context.Users;
         public void SaveUser(User element)
         {
 

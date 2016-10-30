@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
 using SemaFlags.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using SemaFlags.DAL;
 
 namespace SemaFlags.Controllers
 {
     public class BoardController : BaseController
     {
-        public BoardController(ISemaFlagsRepository repo) : base(repo)
+        public BoardController(SemaFlagsDBContext repo) : base(repo)
         {
         }
 
@@ -20,19 +20,19 @@ namespace SemaFlags.Controllers
         public IActionResult Index(int? id)
         {
             if (id == null) return View();
-            Board board = Repo.Boards.FirstOrDefault(b => b.Id == id);
+            Board board = Repo?.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == id);
             ViewBag.Id = id;
             ViewBag.Name = board.Name;
             ViewBag.Description = board.Description;
 
             GroupView gv = new ViewModels.GroupView();
-            gv.Groups = Repo.Groups.Where(g => g.BoardId == id).ToList<Group>();
+            gv.Groups = Repo?.GroupRepository?.Elements?.Where(g => g.BoardId == id).ToList<Group>();
             
             foreach (Group g in gv.Groups) {
-                gv.Nodes.AddRange(Repo.Nodes.Where(n => n.GroupId == g.Id).ToList<Node>());
+                gv.Nodes.AddRange(Repo?.NodeRepository?.Elements?.Where(n => n.GroupId == g.Id).ToList<Node>());
             }
 
-            foreach (User u in Repo.Users) {
+            foreach (User u in Repo.UserRepository?.Elements) {
                 gv.Users.Add(new SelectListItem { Value = u.Id.ToString(),  Text=u.Name});
             }
             return View(gv);
@@ -43,13 +43,14 @@ namespace SemaFlags.Controllers
         {
             return View();
         }
-
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Add(Board board)
         {
             if (ModelState.IsValid)
             {
-                Repo.SaveBoard(board);
+                Repo?.BoardRepository?.SaveElement(board);
+                Repo?.Save();
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -59,15 +60,16 @@ namespace SemaFlags.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            return View(Repo.Boards.FirstOrDefault(b => b.Id == id));
+            return View(Repo.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == id));
         }
-
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit(Board board)
         {
             if (ModelState.IsValid)
             {
-                Repo.SaveBoard(board);
+                Repo?.BoardRepository?.SaveElement(board);
+                Repo?.Save();
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -76,7 +78,8 @@ namespace SemaFlags.Controllers
 
         public IActionResult Delete(int id)
         {
-            Repo.RemoveBoard(id);
+            Repo?.BoardRepository?.RemoveElement(id);
+            Repo?.Save();
             return RedirectToAction("Index", "Home");
         }
 

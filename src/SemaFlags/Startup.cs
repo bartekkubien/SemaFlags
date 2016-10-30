@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SemaFlags.Models;
 using Microsoft.EntityFrameworkCore;
+using SemaFlags.DAL;
 
 namespace SemaFlags
 {

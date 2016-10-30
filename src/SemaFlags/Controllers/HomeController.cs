@@ -4,18 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
+using SemaFlags.DAL;
 
 namespace SemaFlags.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(ISemaFlagsRepository repo):base(repo)
+        public HomeController(SemaFlagsDBContext repo):base(repo)
         {
             
         }
         public IActionResult Index()
         {
-            return View(Repo.Boards);
+            return View(Repo.BoardRepository.Elements);
         }
 
         public IActionResult About()

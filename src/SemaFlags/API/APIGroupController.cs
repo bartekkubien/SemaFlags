@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
 using SemaFlags.Controllers;
+using SemaFlags.DAL;
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SemaFlags.API
@@ -20,11 +21,11 @@ namespace SemaFlags.API
         //}
        
 
-        public APIGroupController(ISemaFlagsRepository repo) : base(repo) { }
+        public APIGroupController(SemaFlagsDBContext repo) : base(repo) { }
 
         //GET api/values/5
         [HttpGet("{id}")]
-        public IEnumerable<Group> Get(int id) => Repo.Groups.Where(g => g.BoardId == id);
+        public IEnumerable<Group> Get(int id) => Repo.GroupRepository?.Elements?.Where(g => g.BoardId == id);
         
 
         // POST api/values

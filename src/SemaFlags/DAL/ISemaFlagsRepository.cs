@@ -2,24 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SemaFlags.Models;
 
-namespace SemaFlags.Models
+namespace SemaFlags.DAL
+
 {
     public interface ISemaFlagsRepository
     {
-        IEnumerable<Board> Boards { get; }
-        void SaveBoard(Board element);
-        Base RemoveBoard(int id);
+        IQueryable<Board> Boards { get; }
+        void SaveElement(Board element);
+        Base RemoveElement(int id);
 
-        IEnumerable<Group> Groups { get; }
+        IQueryable<Group> Groups { get; }
         void SaveGroup(Group element);
         Base RemoveGroup(int id);
 
-        IEnumerable<Node> Nodes { get; }
+        IQueryable<Node> Nodes { get; }
         void SaveNode(Node element);
         Base RemoveNode(int id);
 
-        IEnumerable<User> Users { get; }
+        IQueryable<User> Users { get; }
         void SaveUser(User element);
         Base RemoveUser(int id);
     }
