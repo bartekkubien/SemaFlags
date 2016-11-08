@@ -10,6 +10,7 @@ using SemaFlags.DAL;
 
 namespace SemaFlags.API
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     [Route("api/[controller]")]
     public class APIUserController : BaseController
     {

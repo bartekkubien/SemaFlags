@@ -8,9 +8,10 @@ using SemaFlags.DAL;
 namespace SemaFlags.Migrations
 {
     [DbContext(typeof(SemaFlagsDBContext))]
-    partial class SemaFlagsDBContextModelSnapshot : ModelSnapshot
+    [Migration("20161108205310_Identity")]
+    partial class Identity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

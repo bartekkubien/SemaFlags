@@ -66,16 +66,16 @@ namespace SemaFlags.DAL
                     );
                 context.SaveChanges();
             }
-            if (!context.Users.Any())
-            {
-                context.Users.AddRange(
-                        new User { Name = "Bartek", Description = "" },
-                        new User { Name = "Tomek", Description = "" },
-                        new User { Name = "Ania", Description = "" },
-                        new User { Name = "Paweł", Description = "" }
-                    );
-                context.SaveChanges();
-            }
+            //if (!context.Users.Any())
+            //{
+            //    context.Users.AddRange(
+            //            new User { Name = "Bartek", Description = "" },
+            //            new User { Name = "Tomek", Description = "" },
+            //            new User { Name = "Ania", Description = "" },
+            //            new User { Name = "Paweł", Description = "" }
+            //        );
+            //    context.SaveChanges();
+            //}
           
         }
     }

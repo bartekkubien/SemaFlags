@@ -12,7 +12,7 @@ namespace SemaFlags.DAL
         private GenericRepository<Board> boardRepository;
         private GenericRepository<Group> groupRepository;
         private GenericRepository<Node> nodeRepository;
-        private GenericRepository<User> userRepository;
+        private UserRepository userRepository;
         
         public UnitOfWork(SemaFlagsDBContext ctx)
         {
@@ -52,13 +52,13 @@ namespace SemaFlags.DAL
             }
         }
 
-        public GenericRepository<User> UserRepository
+        public UserRepository UserRepository
         {
             get
             {
                 if (userRepository == null)
                 {
-                    userRepository = new GenericRepository<User>(context.Users);
+                    userRepository = new UserRepository(context.Users);
                 }
                 return userRepository;
             }

@@ -9,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SemaFlags.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SemaFlags.DAL;
+
 
 namespace SemaFlags
 {
@@ -42,6 +44,7 @@ namespace SemaFlags
             services.AddDbContext<SemaFlagsDBContext>(options => {
                 options.UseSqlServer(Configuration["Data:SemaFlags:ConnectionString"]);
             });
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<SemaFlagsDBContext>();
             services.AddTransient<ISemaFlagsRepository, EFSemaFlagsRepository>();
             //services.AddSingleton<IBoardRepo, FakeRepo>;
             services.AddMvc();
@@ -74,6 +77,8 @@ namespace SemaFlags
             app.UseStaticFiles();
 
             app.UseMvcWithDefaultRoute();
+
+            app.UseIdentity();
 
             SeedData.EnsurePopulated(app);
         }
