@@ -5,29 +5,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace SemaFlags.Migrations
 {
-    public partial class Identity : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -43,8 +29,10 @@ namespace SemaFlags.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Color = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    SequenceNumber = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,8 +46,10 @@ namespace SemaFlags.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     BoardId = table.Column<int>(nullable: false),
+                    Color = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    SequenceNumber = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,9 +63,11 @@ namespace SemaFlags.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AssignedUserId = table.Column<int>(nullable: false),
+                    Color = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     GroupId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    SequenceNumber = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,10 +75,26 @@ namespace SemaFlags.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
@@ -117,7 +125,7 @@ namespace SemaFlags.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
-                    RoleId = table.Column<string>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -138,7 +146,7 @@ namespace SemaFlags.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,7 +166,7 @@ namespace SemaFlags.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -175,8 +183,8 @@ namespace SemaFlags.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,11 +202,6 @@ namespace SemaFlags.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -224,6 +227,11 @@ namespace SemaFlags.Migrations
                 name: "IX_AspNetUserRoles_UserId",
                 table: "AspNetUserRoles",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",

@@ -114,7 +114,7 @@ namespace SemaFlags.DAL
         public void SaveUser(User element)
         {
 
-            if (string.IsNullOrEmpty(element.Id))
+            if (element.Id != 0 )
 
                 context.Users.Add(element);
             else
@@ -131,7 +131,7 @@ namespace SemaFlags.DAL
             context.SaveChanges();
         }
 
-        public User RemoveUser(string id)
+        public User RemoveUser(int id)
         {
             User dbEntry = context.Users.FirstOrDefault(e => e.Id == id);
             if (dbEntry != null)

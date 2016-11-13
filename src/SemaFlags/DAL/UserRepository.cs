@@ -16,7 +16,7 @@ namespace SemaFlags.DAL
         }
 
         public IQueryable<User> Elements => context;
-        public User RemoveElement(string id)
+        public User RemoveElement(int id)
         {
             User dbEntry = context.FirstOrDefault(e => e.Id == id);
             if (dbEntry != null)
@@ -29,7 +29,7 @@ namespace SemaFlags.DAL
 
         public void SaveElement(User element)
         {
-            if (String.IsNullOrEmpty(element.Id))
+            if (element.Id!=0)
 
                 context.Add(element);
             else

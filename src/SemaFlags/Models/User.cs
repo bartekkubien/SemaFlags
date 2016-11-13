@@ -10,7 +10,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SemaFlags.Models
 {
-    public class User: IdentityUser
+    public class User: IdentityUser<int>
+        //, IEquatable<User>
     {
         [JsonProperty("Name", Order = 1)]
         [Required(ErrorMessage = "Please enter board name!")]
@@ -22,5 +23,10 @@ namespace SemaFlags.Models
         public int SequenceNumber;
         [JsonProperty("Color", Order = 4)]
         public int Color;
+
+        //public bool Equals(User other)
+        //{
+        //    return this.Id.Equals(other.Id);
+        //}
     }
 }

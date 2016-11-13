@@ -42,6 +42,7 @@ namespace SemaFlags.DAL
                 context.Groups.AddRange(
                         group1, group2, group3, group4    
                     );
+                context.SaveChanges();
             }
            
             if (!context.Nodes.Any())

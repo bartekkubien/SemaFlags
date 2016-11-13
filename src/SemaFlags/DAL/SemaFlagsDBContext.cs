@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace SemaFlags.DAL
 
 {
-    public class SemaFlagsDBContext : IdentityDbContext<User>
+    public class SemaFlagsDBContext : IdentityDbContext<User, Role, int>
     {
         // GET: /<controller>/
         public SemaFlagsDBContext(DbContextOptions<SemaFlagsDBContext> options)

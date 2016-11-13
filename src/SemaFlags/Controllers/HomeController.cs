@@ -12,7 +12,7 @@ namespace SemaFlags.Controllers
     {
         public HomeController(SemaFlagsDBContext repo):base(repo)
         {
-            
+
         }
         public IActionResult Index()
         {

@@ -23,6 +23,6 @@ namespace SemaFlags.DAL
 
         IQueryable<User> Users { get; }
         void SaveUser(User element);
-        User RemoveUser(string id);
+        User RemoveUser(int id);
     }
 }
