@@ -12,6 +12,7 @@ namespace SemaFlags.DAL
         private GenericRepository<Board> boardRepository;
         private GenericRepository<Group> groupRepository;
         private GenericRepository<Node> nodeRepository;
+        private GenericRepository<UserBoardAffiliation > userBoardAffiliationRepository;
         private UserRepository userRepository;
         
         public UnitOfWork(SemaFlagsDBContext ctx)

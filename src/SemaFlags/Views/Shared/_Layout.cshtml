@@ -31,11 +31,20 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated )
+                    {
+
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="User" asp-action="Home">@User.Identity.Name</a></li>
+                    <li><a asp-area="" asp-controller="User" asp-action="LogOut">Logout</a></li>
+                    }
+                    else
+                    {
                     <li><a asp-area="" asp-controller="User" asp-action="Register">Register</a></li>
                     <li><a asp-area="" asp-controller="User" asp-action="Login">Login</a></li>
+                    }
                 </ul>
             </div>
         </div>

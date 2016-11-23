@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
 using SemaFlags.ViewModels;
 using SemaFlags.DAL;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SemaFlags.Controllers
 {
+    [Authorize]
     public class GroupController : BaseController
     {
         public GroupController(SemaFlagsDBContext repo) : base(repo)
@@ -41,11 +43,10 @@ namespace SemaFlags.Controllers
         public IActionResult Add( Group group)
         {
             if (ModelState.IsValid)
-            {
-                int boardId = group.BoardId;
+            {            
                 Repo?.GroupRepository?.SaveElement(group);
                 Repo?.Save();
-                return RedirectToAction("Index", "Board", new { id = boardId });
+                return RedirectToAction("Index", "Board", new { id = group.BoardId });
             }
             else
                 return View();
@@ -62,9 +63,9 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Repo.GroupRepository?.SaveElement(group);
+                Group g = Repo.GroupRepository?.SaveElement(group);
                 Repo?.Save();
-                return RedirectToAction("Index", "Board", new { id = group.BoardId });
+                return RedirectToAction("Index", "Board", new { id = g.BoardId });
             }
             else
                 return View();

@@ -9,7 +9,9 @@ namespace SemaFlags.DAL
     public interface IGenericRepository<TEntity> where TEntity : class
     {
         IQueryable<TEntity> Elements { get; }
-        void SaveElement(TEntity element);
+        TEntity SaveElement(TEntity element);
         TEntity RemoveElement(int id);
+
+        void Clear();
     }
 }

@@ -4,14 +4,7 @@
     ViewData["Title"] = "Board details";
 }
 
-<p>
-    <h4>
-        <label>Board: @ViewBag.Name</label>
-    </h4>
-</p>
-<p>
-    <label>@ViewBag.Description</label>
-</p>
+<div class="bg-primary panel-body"><h4>Board: @ViewBag.Name</h4><h5><br />@ViewBag.Description</h5></div><br />
 <a asp-action="Add" asp-controller="Group" asp-route-id=@ViewBag.Id><span class="glyphicon glyphicon-plus"></span><b> Add group</b></a>
 
 

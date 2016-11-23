@@ -44,17 +44,21 @@ namespace SemaFlags
             services.AddDbContext<SemaFlagsDBContext>(options => {
                 options.UseSqlServer(Configuration["Data:SemaFlags:ConnectionString"]);
             });
+            services.AddTransient<ISemaFlagsRepository, EFSemaFlagsRepository>();
+
             services.AddIdentity<User, Role>(opts => {
                 opts.Password.RequiredLength = 6;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
+                opts.Cookies.ApplicationCookie.LoginPath = "/User/Login";
                 }
             ).AddEntityFrameworkStores<SemaFlagsDBContext, int>();
 
-            services.AddTransient<ISemaFlagsRepository, EFSemaFlagsRepository>();
+            
             //services.AddSingleton<IBoardRepo, FakeRepo>;
+            // services.AddAuthorization();
             services.AddMvc();
         }
 
@@ -82,11 +86,11 @@ namespace SemaFlags
 
             app.UseDeveloperExceptionPage();
 
-            app.UseStaticFiles();
-
-            app.UseMvcWithDefaultRoute();
+            app.UseStaticFiles();         
 
             app.UseIdentity();
+
+            app.UseMvcWithDefaultRoute();
 
             SeedData.EnsurePopulated(app);
         }

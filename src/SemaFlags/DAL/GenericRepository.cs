@@ -17,6 +17,11 @@ namespace SemaFlags.DAL
 
         public IQueryable<TEntity> Elements => context;
 
+        public void Clear()
+        {
+            context.RemoveRange(context);
+        }
+
         public TEntity RemoveElement(int id)
         {
             TEntity dbEntry = context.FirstOrDefault(e => e.Id == id);
@@ -28,22 +33,26 @@ namespace SemaFlags.DAL
             return dbEntry;
         }
 
-        public void SaveElement(TEntity element)
+        public TEntity SaveElement(TEntity element)
         {
             if (element.Id == 0)
+            {
 
                 context.Add(element);
+                return element;
+            }
             else
             {
                 TEntity dbEntry = context.FirstOrDefault(e => e.Id == element.Id);
                 if (dbEntry != null)
                 {
-                    dbEntry.Name = element.Name;
-                    dbEntry.Description = element.Name;
-                    dbEntry.Color = element.Color;
-                    dbEntry.SequenceNumber = element.SequenceNumber;
+                    IBaseCopier copier = CopierFactory.CreateCopier(dbEntry.GetType().ToString());
+                    copier.CopyProperties(dbEntry, element);
+                    return dbEntry;
                 }
-            }         
+
+            }
+            return null;      
         }
     }
 }

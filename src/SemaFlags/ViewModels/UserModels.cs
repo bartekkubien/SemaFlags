@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SemaFlags.ViewModels
 {
-    public class UserModel
+    public class RegisterModel
     {
         [Required]
         public string UserName { get; set; }
@@ -15,6 +15,18 @@ namespace SemaFlags.ViewModels
         [Required]
         public string Email { get; set; }
         [Required]
+        [UIHint("password")]
+        public string Password { get; set; }
+
+    }
+
+    public class LoginModel
+    {
+        [Required]
+        public string UserName { get; set; }
+
+        [Required]
+        [UIHint("password")]
         public string Password { get; set; }
 
     }

@@ -19,7 +19,8 @@ namespace SemaFlags.DAL
         public DbSet<Board> Boards { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Node> Nodes { get; set; }
-       // public DbSet<User> Users { get; set; }
-       
+        public DbSet<UserBoardAffiliation> UserBoardAffiliations { get; set; }
+        // public DbSet<User> Users { get; set; }
+
     }
 }

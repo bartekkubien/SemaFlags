@@ -7,9 +7,11 @@ using SemaFlags.Models;
 using SemaFlags.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SemaFlags.DAL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SemaFlags.Controllers
 {
+    [Authorize]
     public class BoardController : BaseController
     {
         public BoardController(SemaFlagsDBContext repo) : base(repo)
@@ -68,7 +70,7 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Repo?.BoardRepository?.SaveElement(board);
+                Board b = Repo.BoardRepository.SaveElement(board);
                 Repo?.Save();
                 return RedirectToAction("Index", "Home");
             }

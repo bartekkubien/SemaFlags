@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
 using SemaFlags.DAL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SemaFlags.Controllers
 {
+    [Authorize]
     public class HomeController : BaseController
     {
         public HomeController(SemaFlagsDBContext repo):base(repo)
         {
 
         }
+        
         public IActionResult Index()
         {
             return View(Repo.BoardRepository.Elements);

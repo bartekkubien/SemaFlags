@@ -8,9 +8,10 @@ using SemaFlags.DAL;
 namespace SemaFlags.Migrations
 {
     [DbContext(typeof(SemaFlagsDBContext))]
-    partial class SemaFlagsDBContextModelSnapshot : ModelSnapshot
+    [Migration("20161122210455_Affiliation")]
+    partial class Affiliation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -137,8 +138,6 @@ namespace SemaFlags.Migrations
                     b.Property<int>("SequenceNumber");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BoardId");
 
                     b.ToTable("Groups");
                 });
@@ -291,14 +290,6 @@ namespace SemaFlags.Migrations
                     b.HasOne("SemaFlags.Models.User")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SemaFlags.Models.Group", b =>
-                {
-                    b.HasOne("SemaFlags.Models.Board", "BoardKey")
-                        .WithMany()
-                        .HasForeignKey("BoardId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

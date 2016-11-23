@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
 using SemaFlags.DAL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SemaFlags.Controllers
 {
+    [Authorize]
     public class NodeController : BaseController
     {
         public NodeController(SemaFlagsDBContext repo) : base(repo)
@@ -57,9 +59,9 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                Repo?.NodeRepository?.SaveElement(Node);
-                Repo?.Save();
-                return RedirectToAction("Index", "Group", new { id = Node.GroupId });
+                Node n = Repo.NodeRepository.SaveElement(Node);
+                Repo.Save();
+                return RedirectToAction("Index", "Group", new { id = n.GroupId });
             }
             else
                 return View();
