@@ -59,19 +59,19 @@ namespace SemaFlags.Models
         }
     }
 
-    public class UserBoardAffiliationCopier : IBaseCopier
-    {
-        public Base CopyProperties(Base objTo, Base objFrom)
-        {
-            return CopyBoardProperties((UserBoardAffiliation)objTo, (UserBoardAffiliation)objFrom);
-        }
+    //public class UserBoardAffiliationCopier : IBaseCopier
+    //{
+    //    public Base CopyProperties(Base objTo, Base objFrom)
+    //    {
+    //        return CopyBoardProperties((UserBoardAffiliation)objTo, (UserBoardAffiliation)objFrom);
+    //    }
 
-        UserBoardAffiliation CopyBoardProperties(UserBoardAffiliation objTo, UserBoardAffiliation objFrom)
-        {
-            if (objFrom.userId != 0 && objFrom.userId != objTo.userId) objTo.userId = objFrom.userId;
-            if (objFrom.boardId != 0 && objFrom.boardId != objTo.boardId) objTo.boardId = objFrom.boardId;
-            return objTo;
-        }
-    }
+    //    UserBoardAffiliation CopyBoardProperties(UserBoardAffiliation objTo, UserBoardAffiliation objFrom)
+    //    {
+    //        if (objFrom.userId != 0 && objFrom.userId != objTo.userId) objTo.userId = objFrom.userId;
+    //        if (objFrom.boardId != 0 && objFrom.boardId != objTo.boardId) objTo.boardId = objFrom.boardId;
+    //        return objTo;
+    //    }
+    //}
 
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
 using SemaFlags.Controllers;
 using SemaFlags.DAL;
+using Microsoft.AspNetCore.Identity;
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SemaFlags.API
@@ -20,9 +21,9 @@ namespace SemaFlags.API
         //{
         //    return new string[] { "value1", "value2" };
         //}
-       
 
-        public APIGroupController(SemaFlagsDBContext repo) : base(repo) { }
+
+        public APIGroupController(SemaFlagsDBContext repo, UserManager<User> mgr) : base(repo, mgr) { }
 
         //GET api/values/5
         [HttpGet("{id}")]

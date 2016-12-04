@@ -7,6 +7,7 @@ using SemaFlags.Models;
 using SemaFlags.ViewModels;
 using SemaFlags.DAL;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SemaFlags.Controllers
@@ -14,7 +15,7 @@ namespace SemaFlags.Controllers
     [Authorize]
     public class GroupController : BaseController
     {
-        public GroupController(SemaFlagsDBContext repo) : base(repo)
+        public GroupController(SemaFlagsDBContext repo, UserManager<User> mgr) : base(repo, mgr)
         {
         }
 

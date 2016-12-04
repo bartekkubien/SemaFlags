@@ -44,8 +44,8 @@ namespace SemaFlags
             services.AddDbContext<SemaFlagsDBContext>(options => {
                 options.UseSqlServer(Configuration["Data:SemaFlags:ConnectionString"]);
             });
-            services.AddTransient<ISemaFlagsRepository, EFSemaFlagsRepository>();
-
+            //services.AddTransient<ISemaFlagsRepository, EFSemaFlagsRepository>();
+            
             services.AddIdentity<User, Role>(opts => {
                 opts.Password.RequiredLength = 6;
                 opts.Password.RequireNonAlphanumeric = false;

@@ -17,8 +17,8 @@ namespace SemaFlags.Models
                     return new NodeCopier();
                 case "SemaFlags.Models.Group":
                     return new GroupCopier();
-                case "SemaFlags.Models.UserBoardAffiliation":
-                    return new UserBoardAffiliationCopier();
+                //case "SemaFlags.Models.UserBoardAffiliation":
+                    //return new UserBoardAffiliationCopier();
                 default:
                     return null;
             }

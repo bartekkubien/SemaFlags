@@ -195,6 +195,8 @@ namespace SemaFlags.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<int>("Color");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -226,6 +228,8 @@ namespace SemaFlags.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<int>("SequenceNumber");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -253,6 +257,10 @@ namespace SemaFlags.Migrations
                     b.Property<int>("userId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("boardId");
+
+                    b.HasIndex("userId");
 
                     b.ToTable("UserBoardAffiliations");
                 });
@@ -299,6 +307,19 @@ namespace SemaFlags.Migrations
                     b.HasOne("SemaFlags.Models.Board", "BoardKey")
                         .WithMany()
                         .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SemaFlags.Models.UserBoardAffiliation", b =>
+                {
+                    b.HasOne("SemaFlags.Models.Board")
+                        .WithMany("UserAffiliations")
+                        .HasForeignKey("boardId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SemaFlags.Models.User")
+                        .WithMany("BoardAffiliations")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
 using SemaFlags.DAL;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace SemaFlags.Controllers
 {
     [Authorize]
     public class NodeController : BaseController
     {
-        public NodeController(SemaFlagsDBContext repo) : base(repo)
+        public NodeController(SemaFlagsDBContext repo, UserManager<User> mgr) : base(repo, mgr) 
         {
         }
 

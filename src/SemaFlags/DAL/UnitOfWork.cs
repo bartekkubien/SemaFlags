@@ -65,6 +65,18 @@ namespace SemaFlags.DAL
             }
         }
 
+        public GenericRepository<UserBoardAffiliation> UserBoardAffiliationRepository
+        {
+            get
+            {
+                if (userBoardAffiliationRepository == null)
+                {
+                    userBoardAffiliationRepository = new GenericRepository<UserBoardAffiliation>(context.UserBoardAffiliations );
+                }
+                return userBoardAffiliationRepository;
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();

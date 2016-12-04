@@ -6,19 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using SemaFlags.Models;
 using SemaFlags.DAL;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace SemaFlags.Controllers
 {
     [Authorize]
     public class HomeController : BaseController
     {
-        public HomeController(SemaFlagsDBContext repo):base(repo)
+        public HomeController(SemaFlagsDBContext repo, UserManager<User> mgr):base(repo, mgr)
         {
 
         }
         
         public IActionResult Index()
         {
+
+            //IEnumerable<Board> boards = Repo.BoardRepository.Elements.Where(e => e.BoardOwnerId == User.Identity.) 
+            string  userId = UserManager.GetUserId(User );
             return View(Repo.BoardRepository.Elements);
         }
 

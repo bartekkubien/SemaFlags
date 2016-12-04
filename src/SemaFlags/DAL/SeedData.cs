@@ -21,14 +21,53 @@ namespace SemaFlags.DAL
             context.Boards.RemoveRange(context.Boards);
             context.Groups.RemoveRange(context.Groups);
             context.Nodes.RemoveRange(context.Nodes);
-            context.UserBoardAffiliations.RemoveRange(context.UserBoardAffiliations);
+            //context.UserBoardAffiliations.RemoveRange(context.UserBoardAffiliations);
             context.SaveChanges();
+
+            User user = await userManager.FindByNameAsync("Ania");
+            User user1 = await userManager.FindByNameAsync("Tomek");
+            User user2 = await userManager.FindByNameAsync("Michał");
+            User user3 = await userManager.FindByNameAsync("Jacek");
+
+
+
+            if (user == null)
+            {
+                user = new Models.User { UserName = "Ania", Email = "ania@example.com", Name = "Ania R" };
+                await userManager.CreateAsync(user, "aniaPass");
+            }
+
+            if (user1 == null)
+            {
+                user1 = new Models.User { UserName = "Tomek", Email = "tomek@example.com", Name = "Tomek H" };
+                await userManager.CreateAsync(user1, "tomekPass");
+            }
+
+            if (user2 == null)
+            {
+                user2 = new Models.User { UserName = "Michał", Email = "michal@example.com", Name = "Michał S" };
+                try
+                {
+                   IdentityResult a =  await userManager.CreateAsync(user2, "michalPass");
+                }
+                catch (Exception ex) {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            if (user3 == null)
+            {
+                user3 = new Models.User { UserName = "Jacek", Email = "jacek@example.com", Name = "Jacek W" };
+                await userManager.CreateAsync(user3, "jacekPass");
+            }
+
+
             Board board1 = null;
             Board board2 = null;
             if (!context.Boards.Any())
             {
-                board1 = new Board { Name = "Rauta", Description = "Integration Environment" };
-                board2 = new Board { Name = "Nordic" };
+                board1 = new Board { Name = "Rauta", Description = "Integration Environment", BoardOwnerId = user.Id };
+                board2 = new Board { Name = "Nordic", BoardOwnerId = user.Id };
                 context.Boards.AddRange(
                      board1,
                      board2
@@ -85,46 +124,18 @@ namespace SemaFlags.DAL
             //User user1;
             //User user2;
             //User user3;
-            User user = await userManager.FindByNameAsync("Ania");
-            User user1 = await userManager.FindByNameAsync("Tomek");
-            User user2 = await userManager.FindByNameAsync("Michał");
-            User user3 = await userManager.FindByNameAsync("Jacek");
+            //todo use task run
+            
 
+            //if (!context.UserBoardAffiliations.Any())
+            //{
 
-
-            if (user == null)
-            {
-                user = new Models.User { UserName = "Ania", Email = "ania@example.com", Name = "Ania R" };
-                userManager.CreateAsync(user, "aniaPass");
-            }
-
-            if (user1 == null)
-            {
-                user1 = new Models.User { UserName = "Tomek", Email = "tomek@example.com", Name = "Tomek H" };
-                userManager.CreateAsync(user1, "tomekPass");
-            }
-
-            if (user2 == null)
-            {
-                user2 = new Models.User { UserName = "Michał", Email = "michal@example.com", Name = "Michał S" };
-                userManager.CreateAsync(user2, "michalPass");
-            }
-
-            if (user3 == null)
-            {
-                user3 = new Models.User { UserName = "Jacek", Email = "jacek@example.com", Name = "Jacek W" };
-                userManager.CreateAsync(user3, "jacekPass");
-            }
-
-
-            if (!context.UserBoardAffiliations.Any())
-            {
-
-                UserBoardAffiliation uba = new UserBoardAffiliation { userId = user.Id, boardId = board1.Id };
-                UserBoardAffiliation uba1 = new UserBoardAffiliation { userId = user1.Id, boardId = board1.Id };
-                UserBoardAffiliation uba2 = new UserBoardAffiliation { userId = user2.Id, boardId = board1.Id };
-                UserBoardAffiliation uba3 = new UserBoardAffiliation { userId = user3.Id, boardId = board1.Id };
-            }
+            //    UserBoardAffiliation uba = new UserBoardAffiliation { userId = user.Id, boardId = board1.Id };
+            //    UserBoardAffiliation uba1 = new UserBoardAffiliation { userId = user1.Id, boardId = board1.Id };
+            //    UserBoardAffiliation uba2 = new UserBoardAffiliation { userId = user2.Id, boardId = board1.Id };
+            //    UserBoardAffiliation uba3 = new UserBoardAffiliation { userId = user3.Id, boardId = board1.Id };
+            //    context.SaveChanges();
+            //}
 
         }
 

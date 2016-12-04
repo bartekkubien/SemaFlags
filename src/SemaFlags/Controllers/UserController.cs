@@ -84,5 +84,11 @@ namespace SemaFlags.Controllers
             else { }
             return View(model);
         }
+
+        public async Task<IActionResult> Logout(string returnUrl)
+        {
+            await signInManager.SignOutAsync();
+            return Redirect("/");
+        }
     }
 }

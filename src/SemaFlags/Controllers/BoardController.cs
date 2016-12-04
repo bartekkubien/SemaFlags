@@ -8,13 +8,14 @@ using SemaFlags.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SemaFlags.DAL;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace SemaFlags.Controllers
 {
     [Authorize]
     public class BoardController : BaseController
     {
-        public BoardController(SemaFlagsDBContext repo) : base(repo)
+        public BoardController(SemaFlagsDBContext repo, UserManager<User> mgr) : base(repo, mgr)
         {
         }
 

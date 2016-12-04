@@ -8,8 +8,8 @@ using SemaFlags.DAL;
 namespace SemaFlags.Migrations
 {
     [DbContext(typeof(SemaFlagsDBContext))]
-    [Migration("20161122210455_Affiliation")]
-    partial class Affiliation
+    [Migration("20161128213213_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,6 +139,8 @@ namespace SemaFlags.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BoardId");
+
                     b.ToTable("Groups");
                 });
 
@@ -194,6 +196,8 @@ namespace SemaFlags.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<int>("Color");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -225,6 +229,8 @@ namespace SemaFlags.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<int>("SequenceNumber");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -252,6 +258,10 @@ namespace SemaFlags.Migrations
                     b.Property<int>("userId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("boardId");
+
+                    b.HasIndex("userId");
 
                     b.ToTable("UserBoardAffiliations");
                 });
@@ -290,6 +300,27 @@ namespace SemaFlags.Migrations
                     b.HasOne("SemaFlags.Models.User")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SemaFlags.Models.Group", b =>
+                {
+                    b.HasOne("SemaFlags.Models.Board", "BoardKey")
+                        .WithMany()
+                        .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SemaFlags.Models.UserBoardAffiliation", b =>
+                {
+                    b.HasOne("SemaFlags.Models.Board")
+                        .WithMany("UserAffiliations")
+                        .HasForeignKey("boardId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SemaFlags.Models.User")
+                        .WithMany("BoardAffiliations")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
