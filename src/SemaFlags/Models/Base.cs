@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SemaFlags.Models
 {
-    public abstract class Base
+    public abstract class Base: IEntity
     {
         [JsonProperty("Id", Order = 0)]
         [Key]

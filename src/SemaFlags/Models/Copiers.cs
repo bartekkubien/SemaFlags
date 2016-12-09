@@ -1,18 +1,19 @@
-﻿using System;
+﻿using SemaFlags.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SemaFlags.Models
 {
-    public class BoardCopier : IBaseCopier
+    public class BoardCopier : IBaseCopier<IEntity>
     {
-        public Base CopyProperties(Base objTo, Base objFrom)
+        public IEntity CopyProperties(IEntity objTo, IEntity objFrom)
         {
             return CopyBoardProperties((Board)objTo, (Board)objFrom);
         }
 
-        Board CopyBoardProperties(Board objTo, Board objFrom)
+        virtual protected Board CopyBoardProperties(Board objTo, Board objFrom)
         {
             if (objFrom.Name != objTo.Name) objTo.Name = objFrom.Name;
             if (objFrom.Description != objTo.Description) objTo.Description = objFrom.Description;
@@ -21,16 +22,17 @@ namespace SemaFlags.Models
             if (objFrom.BoardOwnerId != 0) objTo.BoardOwnerId = objFrom.BoardOwnerId;
             return objTo;
         }
+
     }
 
-    public class NodeCopier : IBaseCopier
+    public class NodeCopier : IBaseCopier<IEntity>
     {
-        public Base CopyProperties(Base objTo, Base objFrom)
+        public IEntity CopyProperties(IEntity objTo, IEntity objFrom)
         {
-            return CopyBoardProperties((Node)objTo, (Node)objFrom);
+            return CopyNodeProperties((Node)objTo, (Node)objFrom);
         }
 
-        Node CopyBoardProperties(Node objTo, Node objFrom)
+        Node CopyNodeProperties(Node objTo, Node objFrom)
         {
             if (objFrom.Name != objTo.Name) objTo.Name = objFrom.Name;
             if (objFrom.Description != objTo.Description) objTo.Description = objFrom.Description;
@@ -41,14 +43,14 @@ namespace SemaFlags.Models
         }
     }
 
-    public class GroupCopier : IBaseCopier
+    public class GroupCopier : IBaseCopier<IEntity>
     {
-        public Base CopyProperties(Base objTo, Base objFrom)
+        public IEntity CopyProperties(IEntity objTo, IEntity objFrom)
         {
-            return CopyBoardProperties((Group)objTo, (Group)objFrom);
+            return CopyGroupProperties((Group)objTo, (Group)objFrom);
         }
 
-        Group CopyBoardProperties(Group objTo, Group objFrom)
+        Group CopyGroupProperties(Group objTo, Group objFrom)
         {
             if (objFrom.Name != objTo.Name) objTo.Name = objFrom.Name;
             if (objFrom.Description != objTo.Description) objTo.Description = objFrom.Description;
@@ -59,19 +61,19 @@ namespace SemaFlags.Models
         }
     }
 
-    //public class UserBoardAffiliationCopier : IBaseCopier
-    //{
-    //    public Base CopyProperties(Base objTo, Base objFrom)
-    //    {
-    //        return CopyBoardProperties((UserBoardAffiliation)objTo, (UserBoardAffiliation)objFrom);
-    //    }
+    public class UserBoardAffiliationCopier : IBaseCopier<IEntity>
+    {
+        public IEntity CopyProperties(IEntity objTo, IEntity objFrom)
+        {
+            return CopyUserBoardAffiliationProperties((UserBoardAffiliation)objTo, (UserBoardAffiliation)objFrom);
+        }
 
-    //    UserBoardAffiliation CopyBoardProperties(UserBoardAffiliation objTo, UserBoardAffiliation objFrom)
-    //    {
-    //        if (objFrom.userId != 0 && objFrom.userId != objTo.userId) objTo.userId = objFrom.userId;
-    //        if (objFrom.boardId != 0 && objFrom.boardId != objTo.boardId) objTo.boardId = objFrom.boardId;
-    //        return objTo;
-    //    }
-    //}
+        UserBoardAffiliation CopyUserBoardAffiliationProperties(UserBoardAffiliation objTo, UserBoardAffiliation objFrom)
+        {
+            if (objFrom.userId != 0 && objFrom.userId != objTo.userId) objTo.userId = objFrom.userId;
+            if (objFrom.boardId != 0 && objFrom.boardId != objTo.boardId) objTo.boardId = objFrom.boardId;
+            return objTo;
+        }
+    }
 
 }

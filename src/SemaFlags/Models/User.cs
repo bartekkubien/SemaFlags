@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SemaFlags.Models
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser<int>, IEntity
     //, IEquatable<User>
     {
 

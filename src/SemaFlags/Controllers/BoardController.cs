@@ -52,6 +52,10 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
+                int userId = 0;
+                bool ret = int.TryParse(UserManager.GetUserId(User), out userId);
+
+                board.BoardOwnerId = userId;
                 Repo?.BoardRepository?.SaveElement(board);
                 Repo?.Save();
                 return RedirectToAction("Index", "Home");
@@ -63,7 +67,9 @@ namespace SemaFlags.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            return View(Repo.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == id));
+            int userId = 0;
+            bool ret = int.TryParse(UserManager.GetUserId(User), out userId);
+            return View(Repo.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == id && b.BoardOwnerId == userId));
         }
         [ValidateAntiForgeryToken]
         [HttpPost]

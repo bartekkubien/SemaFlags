@@ -21,9 +21,17 @@ namespace SemaFlags.Controllers
         public IActionResult Index()
         {
 
-            //IEnumerable<Board> boards = Repo.BoardRepository.Elements.Where(e => e.BoardOwnerId == User.Identity.) 
-            string  userId = UserManager.GetUserId(User );
-            return View(Repo.BoardRepository.Elements);
+            int userId = 0;
+            bool ret = int.TryParse(UserManager.GetUserId(User), out userId);
+
+            if (ret) {
+                List<int> boardIDs = Repo.UserBoardAffiliationRepository.Elements.Where(uba => uba.userId == userId).Select(p => p.boardId).ToList<int>();
+                boardIDs.AddRange(Repo.BoardRepository.Elements.Where(b => b.BoardOwnerId == userId).Select(p => p.Id ).ToList<int>());
+
+                return View(Repo.BoardRepository.Elements.Where(b => boardIDs.Contains(b.Id)));
+            }
+            else return View();
+                     
         }
 
         public IActionResult About()

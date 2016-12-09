@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SemaFlags.DAL
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : Base
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class, IEntity
     {
         DbSet<TEntity> context;
         public GenericRepository(DbSet<TEntity> ctx) {
@@ -46,7 +46,7 @@ namespace SemaFlags.DAL
                 TEntity dbEntry = context.FirstOrDefault(e => e.Id == element.Id);
                 if (dbEntry != null)
                 {
-                    IBaseCopier copier = CopierFactory.CreateCopier(dbEntry.GetType().ToString());
+                    IBaseCopier< IEntity> copier = CopierFactory.CreateCopier(dbEntry.GetType());
                     copier.CopyProperties(dbEntry, element);
                     return dbEntry;
                 }
