@@ -8,10 +8,11 @@ using System.Windows.Forms;
 using SemaFlagsTray.Models;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using System.Drawing;
 
 namespace SemaFlagsTray
 {
-    static class SemaFlagsTray
+    class SemaFlagsTray
     {
 
         static HttpClient client = new HttpClient();
@@ -19,17 +20,80 @@ namespace SemaFlagsTray
         static List<Node> Nodes = new List<Node>();
         static List<User> Users = new List<User>();
 
+        static MainWindow appWindow;
+
+        #region NotificationArea
+        private static NotifyIcon trayIcon;
+        private static ContextMenu trayMenu;
+        #endregion NotificationArea
+
+        #region Properties
+        public bool Running { get; set; }
+        public bool Visible {
+            get {
+                return SemaflagsWindow.Visibility == System.Windows.Visibility.Visible;
+            }
+        }
+
+        public MainWindow SemaflagsWindow {
+            get {
+                if (appWindow == null)
+                    appWindow = new MainWindow();
+                return appWindow;
+            }
+        }
+
+        #endregion Properties
+
+        #region Helpers
+        private void ShowSemaFlags()
+        {
+            SemaflagsWindow.Show();
+        }
+
+        private void HideSemaFlags()
+        {
+            SemaflagsWindow.Hide();
+        }
+        #endregion Helpers
+
+        #region Events
+        private void ExitSemaFlags(object Sender, EventArgs e)
+        {
+            // Close the form, which closes the application.
+            Running = false;
+        }
+
+        private void Click_SemaFlagsTray(object Sender, EventArgs e)
+        {
+            System.Windows.Forms.MouseEventArgs args = (System.Windows.Forms.MouseEventArgs)e;
+            if (args.Button == MouseButtons.Left) {
+                if (!Visible)
+                    ShowSemaFlags();
+                else
+                    HideSemaFlags();
+            }
+
+           
+            // Close the form, which closes the application.
+
+        }
+
+        #endregion Events
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        //[STAThread]
+        [STAThread]
         static void Main()
         {
-
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new frmBoard());
-            RunAsync().Wait();
+            SemaFlagsTray app = new SemaFlagsTray();
+            while (app.Running)
+            {
+                System.Threading.Thread.Sleep(100);
+                Application.DoEvents();
+            }
+            Application.Exit();
         }
 
         static async Task RunAsync()
@@ -88,16 +152,17 @@ namespace SemaFlagsTray
                     Nodes.AddRange((Node[])nodeSerializer.ReadObject(nodesStream));
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine("GetJSONasStream for Node failed with:");
                 Console.WriteLine(ex.Message);
                 Console.WriteLine("Dear sir, press any key to finish!");
                 Console.ReadKey();
-                return ;
+                return;
 
             }
 
-        
+
             System.IO.Stream usersStream = await GetJSONasStream("api/APIUser/");
             User[] usersArray = (User[])userSerializer.ReadObject(usersStream);
             Users.AddRange(usersArray);
@@ -146,6 +211,29 @@ namespace SemaFlagsTray
             throw new Exception("No can do");
             return null;
 
+        }
+
+        public SemaFlagsTray()
+        {
+            Running = true;
+
+            trayMenu = new ContextMenu();
+
+            MenuItem exitMenuItem = new MenuItem();
+            exitMenuItem.Index = 0;
+            exitMenuItem.Text = "E&xit";
+            exitMenuItem.Click += new System.EventHandler(this.ExitSemaFlags);
+
+            trayMenu.MenuItems.Add(exitMenuItem);
+
+            System.ComponentModel.Container components = new System.ComponentModel.Container();
+            trayIcon = new NotifyIcon(components);
+            trayIcon.Text = "SemaFlags";
+            trayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);
+            trayIcon.Visible = true;
+
+            trayIcon.ContextMenu = trayMenu;
+            trayIcon.Click += new System.EventHandler(this.Click_SemaFlagsTray);
         }
     }
 }

@@ -20,25 +20,35 @@ namespace SemaFlags.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int? id)
+        public IActionResult Index(int id)
         {
-            if (id == null) return View();
-            Board board = Repo?.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == id);
-            ViewBag.Id = id;
-            ViewBag.Name = board.Name;
-            ViewBag.Description = board.Description;
+                
+            if (id !=0 && GetUserId !=-1 && Repo.CanUserEditBoard(GetUserId, (int)id))
+            {
+                Board board = Repo?.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == id);
+                ViewBag.Id = id;
+                ViewBag.Name = board.Name;
+                ViewBag.Description = board.Description;
 
-            GroupView gv = new ViewModels.GroupView();
-            gv.Groups = Repo?.GroupRepository?.Elements?.Where(g => g.BoardId == id).ToList<Group>();
-            
-            foreach (Group g in gv.Groups) {
-                gv.Nodes.AddRange(Repo?.NodeRepository?.Elements?.Where(n => n.GroupId == g.Id).ToList<Node>());
+                GroupView gv = new ViewModels.GroupView();
+                gv.userId = GetUserId;
+                gv.Groups = Repo?.GroupRepository?.Elements?.Where(g => g.BoardId == id).ToList<Group>();
+
+                foreach (Group g in gv.Groups)
+                {
+                    gv.Nodes.AddRange(Repo?.NodeRepository?.Elements?.Where(n => n.GroupId == g.Id).ToList<Node>());
+                }
+
+                var userIds = Repo?.UserBoardAffiliationRepository.Elements.Where(uba => uba.boardId == id).Select(uba => uba.userId );
+
+                gv.Users.AddRange(Repo?.UserRepository?.Elements.Where(u => userIds.Contains(u.Id)));
+
+                return View(gv);
+            }
+            else {
+                return RedirectToAction("Index", "Home");
             }
 
-            foreach (User u in Repo.UserRepository?.Elements) {
-                gv.Users.Add(new SelectListItem { Value = u.Id.ToString(),  Text=u.Name});
-            }
-            return View(gv);
         }
 
         [HttpGet]
@@ -52,11 +62,15 @@ namespace SemaFlags.Controllers
         {
             if (ModelState.IsValid)
             {
-                int userId = 0;
-                bool ret = int.TryParse(UserManager.GetUserId(User), out userId);
-
-                board.BoardOwnerId = userId;
                 Repo?.BoardRepository?.SaveElement(board);
+                Repo?.Save();
+                UserBoardAffiliation uba = new UserBoardAffiliation()
+                {
+                    userId = GetUserId,
+                    boardId = board.Id,
+                    isAdmin = true
+                };
+                Repo?.UserBoardAffiliationRepository?.SaveElement(uba);
                 Repo?.Save();
                 return RedirectToAction("Index", "Home");
             }
@@ -65,17 +79,18 @@ namespace SemaFlags.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            int userId = 0;
-            bool ret = int.TryParse(UserManager.GetUserId(User), out userId);
-            return View(Repo.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == id && b.BoardOwnerId == userId));
+            if (Repo.CanUserEditBoard(GetUserId, id))
+                return View(Repo.BoardRepository?.Elements?.FirstOrDefault(b => b.Id == id /*canedit(user, board)*/));  //add CanEdit in Repo
+            else
+                return RedirectToAction("Index");
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit(Board board)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && Repo.CanUserEditBoard(GetUserId, board.Id))
             {
                 Board b = Repo.BoardRepository.SaveElement(board);
                 Repo?.Save();
@@ -87,8 +102,11 @@ namespace SemaFlags.Controllers
 
         public IActionResult Delete(int id)
         {
-            Repo?.BoardRepository?.RemoveElement(id);
-            Repo?.Save();
+            if (Repo.CanUserEditBoard(GetUserId, id))
+            {
+                Repo?.BoardRepository?.RemoveElement(id);
+                Repo?.Save();
+            }
             return RedirectToAction("Index", "Home");
         }
 

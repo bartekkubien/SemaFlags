@@ -8,9 +8,10 @@ using SemaFlags.DAL;
 namespace SemaFlags.Migrations
 {
     [DbContext(typeof(SemaFlagsDBContext))]
-    partial class SemaFlagsDBContextModelSnapshot : ModelSnapshot
+    [Migration("20161218131137_Uba")]
+    partial class Uba
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
@@ -258,8 +259,6 @@ namespace SemaFlags.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("boardId");
-
-                    b.Property<bool>("isAdmin");
 
                     b.Property<int>("userId");
 

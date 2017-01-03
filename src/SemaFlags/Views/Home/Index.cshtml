@@ -28,7 +28,7 @@
                         <td><a asp-action="Index" asp-controller="Board" asp-route-id=@b.Id>@b.Name</a></td>
                         <td>@b.Description</td>
                         <td>
-                            @if (b.BoardOwnerId.ToString() == User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value)  {
+                            @if (b.UserAffiliations.Any(uba => uba.isAdmin == true)){ 
                                 <a asp-action="Edit" asp-controller="Board" asp-route-id=@b.Id><span class="glyphicon glyphicon-edit"></span></a>
                                 <a asp-action="Delete" asp-controller="Board" asp-route-id=@b.Id><span class="glyphicon glyphicon-remove"></span></a>
                             }

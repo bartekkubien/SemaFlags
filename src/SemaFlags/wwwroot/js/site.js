@@ -19,6 +19,58 @@ $(".userBox").change(updateUserAjax);
 //    xhttp.send("userId=" + userId + "&nodeId=" + nodeId);
 //}
 
+function claimNode( nodeId,  userId) {
+    //var nodeId = $(this).attr('id').replace(/\D/g, '');
+    //var userId = $(this).val()
+
+    var stateId = "#state" + nodeId;
+    var nodeAction = "#nodeAction" + nodeId;
+    $(stateId).html("<img src='/images/ajax-loader.gif'/>");
+
+    $.ajax({
+        url: "/Node/ChangeUser",
+        type: 'POST',
+        data: { userId: userId, nodeId: nodeId },
+        error: function (data) {
+            $(stateId).html("<span class='glyphicon glyphicon-remove' style='color:red'></span>" +
+                            "Unknown");
+            
+        },
+        success: function (data) {
+            $(stateId).html("<span class='glyphicon glyphicon-ok' style='color:green'></span>");
+            $(nodeAction).html("<button onclick='releaseNode(" + nodeId + ", " + userId + ")'>Release</button>");
+        }
+
+    });
+}
+
+function releaseNode(nodeId, userId) {
+    //var nodeId = $(this).attr('id').replace(/\D/g, '');
+    //var userId = $(this).val()
+
+    var stateId = "#state" + nodeId;
+    var nodeAction = "#nodeAction" + nodeId;
+    $(stateId).html("<img src='/images/ajax-loader.gif'/>");
+
+    $.ajax({
+        url: "/Node/ChangeUser",
+        type: 'POST',
+        data: { userId: 0, nodeId: nodeId },
+        error: function (data) {
+            $(stateId).html("<span class='glyphicon glyphicon-remove' style='color:red'></span>");
+            $(nodeAction).html("Unknown");
+
+        },
+        success: function (data) {
+            $(stateId).html("<span class='glyphicon glyphicon-ok' style='color:green'></span>");
+            $(nodeAction).html("<button onclick='claimNode(" + nodeId + ", " + userId + ")'>Claim</button>");
+        }
+
+    });
+}
+
+
+
 function updateUserAjax() {
     var nodeId = $(this).attr('id').replace(/\D/g, '');
     var userId = $(this).val()

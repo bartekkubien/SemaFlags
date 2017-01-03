@@ -19,7 +19,6 @@ namespace SemaFlags.Models
             if (objFrom.Description != objTo.Description) objTo.Description = objFrom.Description;
             if (objFrom.SequenceNumber != 0 && objFrom.SequenceNumber != objTo.SequenceNumber) objTo.SequenceNumber = objFrom.SequenceNumber;
             if (objFrom.Color != 0 && objFrom.Color != objTo.Color) objTo.Color = objFrom.Color;
-            if (objFrom.BoardOwnerId != 0) objTo.BoardOwnerId = objFrom.BoardOwnerId;
             return objTo;
         }
 

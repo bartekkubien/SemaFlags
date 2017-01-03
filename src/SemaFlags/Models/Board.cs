@@ -20,10 +20,6 @@ namespace SemaFlags.Models
         public virtual int SequenceNumber { get; set; }
         [JsonProperty("Color", Order = 4)]
         public virtual int Color { get; set; }
-        [ForeignKey("UserKey")]
-        [JsonProperty("BoardOwnerId", Order = 5)]
-        [Required(ErrorMessage = "User does not exist!")]
-        public virtual int BoardOwnerId { get; set; }
         public virtual User UserKey { get; set; }
         public virtual ICollection<UserBoardAffiliation> UserAffiliations { get; set; }
     }

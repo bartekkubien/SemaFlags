@@ -26,7 +26,7 @@ namespace SemaFlags.DAL
 
             User user = await userManager.FindByNameAsync("Ania");
             User user1 = await userManager.FindByNameAsync("Tomek");
-            User user2 = await userManager.FindByNameAsync("Michał");
+            User user2 = await userManager.FindByNameAsync("Michal");
             User user3 = await userManager.FindByNameAsync("Jacek");
 
 
@@ -45,7 +45,7 @@ namespace SemaFlags.DAL
 
             if (user2 == null)
             {
-                user2 = new Models.User { UserName = "Michał", Email = "michal@example.com", Name = "Michał S" };
+                user2 = new Models.User { UserName = "Michal", Email = "michal@example.com", Name = "Michał S" };
                 try
                 {
                    IdentityResult a =  await userManager.CreateAsync(user2, "michalPass");
@@ -66,8 +66,8 @@ namespace SemaFlags.DAL
             Board board2 = null;
             if (!context.Boards.Any())
             {
-                board1 = new Board { Name = "Rauta", Description = "Integration Environment", BoardOwnerId = user.Id };
-                board2 = new Board { Name = "Nordic", BoardOwnerId = user.Id };
+                board1 = new Board { Name = "Rauta", Description = "Integration Environment" };
+                board2 = new Board { Name = "Nordic"};
                 context.Boards.AddRange(
                      board1,
                      board2
@@ -95,19 +95,19 @@ namespace SemaFlags.DAL
             if (!context.Nodes.Any())
             {
                 context.Nodes.AddRange(
-                        new Node { GroupId = group1.Id, Name = "Finnish POS", Description = "F555P001" },
-                        new Node { GroupId = group1.Id, Name = "Finnish BS", Description = "F555S001" },
+                        new Node { GroupId = group1.Id, Name = "Finnish POS", Description = "F555P001", AssignedUserId = user.Id },
+                        new Node { GroupId = group1.Id, Name = "Finnish BS", Description = "F555S001", AssignedUserId = user2.Id },
                         new Node { GroupId = group1.Id, Name = "Swedish POS", Description = "H555P001" },
                         new Node { GroupId = group1.Id, Name = "Swedish BS", Description = "H555S001" },
-                        new Node { GroupId = group1.Id, Name = "Latvian POS", Description = "L555P001" },
-                        new Node { GroupId = group1.Id, Name = "Latvian BS", Description = "L555S001" },
+                        new Node { GroupId = group1.Id, Name = "Latvian POS", Description = "L555P001", AssignedUserId = user.Id },
+                        new Node { GroupId = group1.Id, Name = "Latvian BS", Description = "L555S001", AssignedUserId = user1.Id },
                         new Node { GroupId = group1.Id, Name = "Estonian POS", Description = "V555P001" },
                         new Node { GroupId = group1.Id, Name = "Estonian BS", Description = "V555S001" },
                         new Node { GroupId = group2.Id, Name = "Finnish POS", Description = "F550P001" },
                         new Node { GroupId = group2.Id, Name = "Finnish BS", Description = "F550S001" },
                         new Node { GroupId = group2.Id, Name = "Swedish POS", Description = "H550P001" },
                         new Node { GroupId = group2.Id, Name = "Swedish BS", Description = "H550S001" },
-                        new Node { GroupId = group2.Id, Name = "Latvian POS", Description = "L550P001" },
+                        new Node { GroupId = group2.Id, Name = "Latvian POS", Description = "L550P001", AssignedUserId = user2.Id },
                         new Node { GroupId = group2.Id, Name = "Latvian BS", Description = "L550S001" },
                         new Node { GroupId = group2.Id, Name = "Estonian POS", Description = "V550P001" },
                         new Node { GroupId = group2.Id, Name = "Estonian BS", Description = "V550S001" }
@@ -115,27 +115,18 @@ namespace SemaFlags.DAL
                 context.SaveChanges();
             }
 
-            //Task<User> tu = userManager.FindByNameAsync("Ania");
-            //Task<User> tu1 = userManager.FindByNameAsync("Tomek");
-            //Task<User> tu2 = userManager.FindByNameAsync("Michał");
-            //Task<User> tu3 = userManager.FindByNameAsync("Jacek");
-
-            //User user;
-            //User user1;
-            //User user2;
-            //User user3;
-            //todo use task run
-            
-
-            //if (!context.UserBoardAffiliations.Any())
-            //{
-
-            //    UserBoardAffiliation uba = new UserBoardAffiliation { userId = user.Id, boardId = board1.Id };
-            //    UserBoardAffiliation uba1 = new UserBoardAffiliation { userId = user1.Id, boardId = board1.Id };
-            //    UserBoardAffiliation uba2 = new UserBoardAffiliation { userId = user2.Id, boardId = board1.Id };
-            //    UserBoardAffiliation uba3 = new UserBoardAffiliation { userId = user3.Id, boardId = board1.Id };
-            //    context.SaveChanges();
-            //}
+            if (!context.UserBoardAffiliations.Any())
+            {
+                context.UserBoardAffiliations.AddRange(
+                     new UserBoardAffiliation { userId = user.Id, boardId = board1.Id, isAdmin = true },
+                     new UserBoardAffiliation { userId = user.Id, boardId = board2.Id },
+                     new UserBoardAffiliation { userId = user1.Id, boardId = board1.Id },
+                     new UserBoardAffiliation { userId = user1.Id, boardId = board2.Id, isAdmin = true },
+                     new UserBoardAffiliation { userId = user2.Id, boardId = board1.Id },
+                     new UserBoardAffiliation { userId = user3.Id, boardId = board1.Id }
+                );
+                context.SaveChanges();
+            }
 
         }
 

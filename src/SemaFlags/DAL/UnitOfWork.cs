@@ -102,5 +102,13 @@ namespace SemaFlags.DAL
             GC.SuppressFinalize(this);
         }
 
+        public bool CanUserEditBoard(int userId, int boardId) {
+            return UserBoardAffiliationRepository.Elements.Any(uba => uba.userId == userId && uba.boardId == boardId && uba.isAdmin);
+        }
+
+        public bool CanUserViewBoard(int userId, int boardId)
+        {
+            return UserBoardAffiliationRepository.Elements.Any(uba => uba.userId == userId && uba.boardId == boardId);
+        }
     }
 }

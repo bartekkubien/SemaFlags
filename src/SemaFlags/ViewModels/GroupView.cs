@@ -13,10 +13,11 @@ namespace SemaFlags.ViewModels
         public GroupView() {
             Groups = new List<Group>();
             Nodes = new List<Node>();
-            Users = new List<SelectListItem>();
+            Users = new List<User>();
         }
         public List<Group> Groups;
         public List<Node> Nodes;
-        public List<SelectListItem> Users;
+        public List<User> Users;
+        public int userId;
     }
 }

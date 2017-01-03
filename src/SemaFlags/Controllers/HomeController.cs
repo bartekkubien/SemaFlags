@@ -21,14 +21,16 @@ namespace SemaFlags.Controllers
         public IActionResult Index()
         {
 
-            int userId = 0;
-            bool ret = int.TryParse(UserManager.GetUserId(User), out userId);
-
-            if (ret) {
-                List<int> boardIDs = Repo.UserBoardAffiliationRepository.Elements.Where(uba => uba.userId == userId).Select(p => p.boardId).ToList<int>();
-                boardIDs.AddRange(Repo.BoardRepository.Elements.Where(b => b.BoardOwnerId == userId).Select(p => p.Id ).ToList<int>());
-
-                return View(Repo.BoardRepository.Elements.Where(b => boardIDs.Contains(b.Id)));
+            if (GetUserId != -1) {
+                List<int> boardIDs = Repo.UserBoardAffiliationRepository.Elements.Where(uba => uba.userId == GetUserId).Select(p => p.boardId).ToList<int>();
+                List<Board> vb = new List<Board>();
+                                     
+                foreach (int id in boardIDs) {
+                    Board b = Repo?.BoardRepository?.Elements.FirstOrDefault(e => e.Id == id);
+                    b.UserAffiliations = Repo?.UserBoardAffiliationRepository?.Elements.Where(uba => uba.boardId == id && uba.userId == GetUserId).ToList<UserBoardAffiliation>();
+                    vb.Add(b);
+                }
+                return View(vb);
             }
             else return View();
                      
